@@ -1,4 +1,4 @@
-# Logicka
+﻿# Logicka
 A game that give you a first contact with Programming Logical aspects.
 
 Logicka is free software: You can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,4 +17,4 @@ Este programa é distribuido na esperança de ser útil, mas SEM QUALQUER GARANT
 
 Você deve ter recebido uma copia da licença geral publica GNU com este programa. Se não, veja <http://www.gnu.org/licenses/>.
 
-O projeto foi desenvolvido por Lucas Borges <lucas.s.m.b@hotmail.com>, como gerente de projeto, Alessandra Mitie <alessandra.mitie@gmail.com>, Daniel Coelho <dancds@hotmail.com>, Eliel Silva <elielblast@hotmail.com> and Wesley Rueda <Wesleyrueda@gmail.com>, para mais informações veja a documentação do projeto.
+O projeto foi desenvolvido por Lucas Borges <lucas.s.m.b@hotmail.com>, como gerente de projeto, Alessandra Mitie <alessandra.mitie@gmail.com>, Daniel Coelho <dancds@hotmail.com>, Eliel Silva <elielblast@hotmail.com> e Wesley Rueda <Wesleyrueda@gmail.com>, para mais informações veja a documentação do projeto.
