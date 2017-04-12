@@ -45,22 +45,8 @@ end
 function organizarBlocos(blocosP,desafioA,blocosM)
 
 local blocosRecebidos = {}
-
-	for i = 1, #blocosM-1, 1 do
-    	for j = i + 1, #blocosM, 1 do
-        	if (blocosM[i] == blocosM[j]) then
-            	table.remove(blocosM, i)
-            	break
-        	end
-    	end
-	end
-
-	for contadorDeBlocos=1,#blocosM,1 do 
-
-		valor=blocosM[contadorDeBlocos]
-		blocosRecebidos[contadorDeBlocos]=blocosP[valor]
-
-	end
+blocosRecebidos = blocosP
+i=1
 
 	-- Laço que irá rodar enquanto houverem linhas na tabela
 	for row in db:nrows("SELECT res_num, ds_resultado FROM t_Puzzle WHERE id_puzzle="..desafioA) do

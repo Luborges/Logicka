@@ -497,14 +497,66 @@ function moverBloco(self, event)
 	return true
 	
 end 
-
+blocosNovos = {}
+blocosNovos2 = {}
 function verificarDesafio(self, event)
 		local soundEffect = audio.loadSound("GameDesign/Audio/testa.mp3")
 			audio.play( soundEffect )
 
 	if event.phase =="began" or event.phase == "moved" then
 
-		novoDialogo=vf:verificar(blocosPosicionamento,numeroDesafio,quantidadeDeBlocos,blocosMovidos)
+	for contadorDeBlocos0=1,#blocosMovidos,1 do 
+
+		valor0=blocosMovidos[contadorDeBlocos0]
+		blocosNovos[contadorDeBlocos0]=blocosPosicionamento[valor0]
+
+	end
+d=0
+while d<3 do
+	for i = 1, #blocosNovos, 1 do
+    	for j = i + 1, #blocosNovos+1, 1 do
+        	if (blocosNovos[i] == blocosNovos[j]) then
+            	table.remove(blocosNovos, i)
+            	i=1
+        	end
+    	end
+	end
+	d=d+1
+end
+j=1
+	for contNovo=1,#blocosNovos,1 do
+		if blocosNovos[contNovo]~=nil then
+			blocosNovos2[j]=blocosNovos[contNovo]
+			j=j+1
+		end
+	end
+	blocosNovos=nil
+	blocosNovos={}
+	blocosNovos=blocosNovos2
+	d=0
+	while d<3 do
+		for contador=1,#blocosNovos,1 do
+			if blocosNovos[contador]==nil then
+				contador=contador+1
+			elseif blocosNovos[contador].x <largura*.125 or blocosNovos[contador].y<altura*.107 or blocosNovos[contador].y>altura*.884 or blocosNovos[contador].x>largura*.38 then
+				print('aqui')
+				for con=1,#blocosNovos,1 do
+					print (blocosNovos[con].id)
+				end
+				table.remove(blocosNovos, contador)
+				for con=1,#blocosNovos,1 do
+					print (blocosNovos[con].id)
+				end
+			end
+		end
+		d=d+1
+	end
+		for contador=1,#blocosNovos,1 do
+			print (blocosNovos[contador].id)
+		end
+--		print (blocosPosicionamento[blocosMovidos[2]].id)
+
+		novoDialogo=vf:verificar(blocosNovos,numeroDesafio,quantidadeDeBlocos,blocosMovidos)
 
 		quantidadeDeBlocos=nil
 

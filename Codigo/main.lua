@@ -18,13 +18,13 @@ end
 main();
 
 -- Chama classe de Testes
---require("TesteUnitario")
+-- require("TesteUnitario")
 
---testaValoresDeOperacao()
---testaValoresDeDecisao()
---testaVerificacaoDeDesafio()
---testaMapaExistente()
---testaGenero()
---testaLaco()
---testaBuscaFase()
---testaBuscaDesafio()
+-- testaValoresDeOperacao()
+-- testaValoresDeDecisao()
+-- testaVerificacaoDeDesafio()
+-- testaMapaExistente()
+-- testaGenero()
+-- testaLaco()
+-- testaBuscaFase()
+-- testaBuscaDesafio()

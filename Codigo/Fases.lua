@@ -30,7 +30,6 @@ function scene:createScene(event)
   	end
 
   	if id_fase==0 then
-
   		require ("TelaDeCredito")
   		tc = TelaDeCredito:new()
   		tc:creditos()
