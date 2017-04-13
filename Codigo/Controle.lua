@@ -173,7 +173,7 @@ local touchFunction = function(e)
 				db:exec(selecionarDesafio)
 
 				-- Laço que irá rodar enquanto houverem linhas na tabela
-				for row in db:nrows("SELECT max(id_puzzle) AS puzzle FROM t_Puzzle WHERE fg_realizado='false' AND fg_liberado='true' AND id_fase= (SELECT id_fase FROM t_Jogador)") do
+				for row in db:nrows("SELECT max(id_puzzle) AS puzzle FROM t_Puzzle WHERE fg_liberado='true' AND id_fase= (SELECT id_fase FROM t_Jogador)") do
 
 					faseLiberada = row.puzzle
 

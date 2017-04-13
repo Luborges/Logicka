@@ -389,7 +389,7 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 
 		elseif valorDoBloco==condicaoFalsa and flagExibicao==true then
 
-			local solucao=[[UPDATE t_Puzzle SET fg_realizado='true' WHERE id_puzzle = (SELECT max(id_puzzle) FROM t_Puzzle WHERE fg_realizado='false' AND fg_liberado='true'); ]]
+			local solucao=[[UPDATE t_Puzzle SET fg_realizado='true' WHERE id_puzzle =]]..desafioAt..[[; ]]
 			local desbloqueio=[[UPDATE t_Puzzle SET fg_liberado='true' WHERE id_puzzle = (SELECT min(id_puzzle) FROM t_Puzzle WHERE id_fase=]]..proximaFaseF..[[); ]]
 			local proximaFase=[[UPDATE t_Jogador SET id_fase=]]..proximaFaseF..[[ WHERE id_jogador = 1; ]]
 

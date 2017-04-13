@@ -63,24 +63,30 @@ function scene:createScene(event)
 		local pX=0
 		local pY=0
 
-
 		if primeiroAcesso=='true' then
 			pX=ini_x
 			pY=ini_y
 
-			local posicaoInicial = [[UPDATE t_Jogador SET ini_y=]]..ini_y..[[, ini_x=]]..ini_x..[[ WHERE id_jogador=1;]]
+			local posicaoInicial = [[UPDATE t_Jogador SET ini_y=]]..ini_y..[[, ini_x=]]..ini_x..[[;]]
 			db:exec(posicaoInicial)
 			if id_fase>1 then
 				faseAnterior=id_fase-1
 			end
-			if faseAnterior ~=nil then
-				atualizarFase2 = [[UPDATE t_Fase SET fg_dialogo='true' WHERE id_fase=']]..faseAnterior..[[']]
-				db:exec(atualizarFase2)
-			end
 		else
-			pX=inicial_x
-			pY=inicial_y
+			for row in db:nrows("SELECT max(id_puzzle) AS m_max FROM t_Puzzle WHERE fg_realizado='true' AND id_fase=(SELECT id_fase FROM t_Jogador);") do
+				p_max=row.m_max
+			end
+			for row in db:nrows("SELECT min(id_puzzle) AS m_min FROM t_Puzzle WHERE id_fase=(SELECT id_fase FROM t_Jogador);") do
+				p_min=row.m_min
+			end
 
+			if p_min==p_max then
+				pX=ini_x
+				pY=ini_y
+			else
+				pX=inicial_x
+				pY=inicial_y
+			end
 		end
 
 		pr = Personagem:new()
