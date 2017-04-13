@@ -1,9 +1,9 @@
 --Mapa
 
--- meta Classe
+-- Meta Classe
 Mapa = {}
 
--- construtor da Clase
+-- Construtor da Clase
 function Mapa:new (o)
 
   o = o or {}
@@ -13,7 +13,7 @@ function Mapa:new (o)
 
 end
 
--- metodo que irá receber os valores para executar o laço de repetição e devolverá o valor a cada rodagem
+-- Metodo que irá receber os valores para executar o laço de repetição e devolverá o valor a cada rodagem
 function Mapa:criarMapa (numeroDaFase)
 
 	-- Calcula largura e altura da tela
@@ -36,14 +36,14 @@ function Mapa:criarMapa (numeroDaFase)
 
 --		require ("SplashScreen")
 --		local storyboard = require("storyboard")	
- --		storyboard.gotoScene(SplashScreen)
+--		storyboard.gotoScene(SplashScreen)
   		
   	else
 
 	-- Nome do mapa que vai subir  
 	local mapaAtual = "tela0"..numeroDaFase..".lua"
 
-	--buscando o mapa informado na pasta "maps"
+	-- Buscando o mapa informado na pasta "maps"
 	map = dusk.buildMap("GameDesign/DesignGrafico/Fases/" .. mapaAtual)
 	map.setTrackingLevel(0.5) -- "Fluideity" of the camera movement; numbers closer to 0 mean more fluidly and slowly (but 0 itself will disable the camera!)
 

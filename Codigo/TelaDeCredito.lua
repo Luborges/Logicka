@@ -35,7 +35,7 @@ end
 function TelaDeCredito:moveTexto(oIndice)
 
 	TelaDeCredito:criaTexto(textoDeCredito[oIndice])
-	transition.to(texto, {time = 50000, y = display.contentHeight*-1.5,
+	transition.to(texto, {time = 30000, y = display.contentHeight*-1.5,
 	onComplete = function ()
 
 					-- Retorna a splashScreen
@@ -57,14 +57,6 @@ function TelaDeCredito:creditos()
 						"e um caminho que o levasse para casa. \n\n\n\n".. 	
 						"A aventura continua... \n\n\n\n"..
 						"            -- LOGICKA -- \n\n"..	
-						"Este projeto é parte integrante  \n"..
-						"do Projeto Logicka. \n"..
-						"Apresentado como requisito para \n"..
-						"aprovação na disciplinade PGP \n"..
-						"(Prática de Gerenciamento de Projetos), \n"..
-						"do Instituto Federal de Ciências e \n"..
-						"Tecnologia de São Paulo.  \n\n\n"..
-						
 						"Equipe: \n\n"..
 						"- Alessandra Mitie Kikuchi \n"..
 						"- Daniel Coelho da Silva \n"..
@@ -72,14 +64,11 @@ function TelaDeCredito:creditos()
 						"- Lucas de Souza Mendes Borges \n"..
 						"- Wesley Antonioli Rueda\n\n"..
 						
-						"Orientadores: \n\n"..
-						"- Profº Dr. José Braz de Araújo \n"..
-						"- Profº Ivan Francolin Martinez \n\n\n\n\n\n\n\n\n"..
 						" Obrigado por Jogar.\n"..
 						" \n"
 
 	for indice = 1,table.getn(textoDeCredito),1 do
 		
-		timer.performWithDelay(3000,TelaDeCredito:moveTexto(indice))
+		timer.performWithDelay(2500,TelaDeCredito:moveTexto(indice))
 	end
 end

@@ -248,35 +248,41 @@ end
 function encerraDialogo()
 
 	-- Matar objetos de tela e limpar memoria
-		indice = 0
-		botaoAnterior:removeSelf()
-		botaoAnterior = nil
-		botaoProximo:removeSelf()
-		botaoProximo = nil		
-		eliminarFundo = 1
-		caixaDeDialogo:removeSelf()
-		caixaDeDialogo = nil
-		texto:removeSelf()
-		personagemEmissor:removeSelf()	
-		imagemDeFundo:removeSelf()
-		imagemDeFundo=nil		
+	indice = 0
+	botaoAnterior:removeSelf()
+	botaoAnterior = nil
+	botaoProximo:removeSelf()
+	botaoProximo = nil		
+	eliminarFundo = 1
+	caixaDeDialogo:removeSelf()
+	caixaDeDialogo = nil
+	texto:removeSelf()
+	personagemEmissor:removeSelf()	
+	imagemDeFundo:removeSelf()
+	imagemDeFundo=nil		
 		
-		-- Remove o som da tela de dialogo.
+	-- Remove o som da tela de dialogo.
+	sound:stopAll(sound)
+		
+	for row in db:nrows("SELECT id_fase FROM t_Jogador WHERE id_jogador=1") do
+		--Para todos os sons atuais
 		sound:stopAll(sound)
-		
-		for row in db:nrows("SELECT id_fase FROM t_Jogador WHERE id_jogador=1") do
-			--Para todos os sons atuais
-			sound:stopAll(sound)
 
+		if id_fase==0 then
+  			require ("TelaDeCredito")
+  			tc = TelaDeCredito:new()
+  			tc:creditos()
+
+	  	elseif id_fase == 2 then
+			sound:add("GameDesign/Audio/Cav01.wav", "GameDesign/Audio/Cav01")
+			sound:setVolume(0.8)
+			sound:play("GameDesign/Audio/Cav01",{loops=-1})
+
+		else
 			-- Adiciona o som que sera utilizado nas fases
 			sound:add( "GameDesign/Audio/song"..row.id_fase..".mp3", "GameDesign/Audio/song"..row.id_fase)
 			sound:setVolume( 0.4 )
 			sound:play("GameDesign/Audio/song"..row.id_fase, {loops=-1} )
-			
-			if id_fase == 2 then
-			sound:add("GameDesign/Audio/Cav01.wav", "GameDesign/Audio/Cav01")
-			sound:setVolume(0.8)
-			sound:play("GameDesign/Audio/Cav01",{loops=-1})
 		end
 	end
 end
@@ -315,6 +321,8 @@ function TelaDeDialogo:dialogoFase()
 	local sp = buscaSexoPersonagem()
 	local faseAtual = buscaFaseAtual()
 
+	if faseAtual==0 then faseAtual=3 end
+
 	local cont = 1
 	local contador=1
 
@@ -337,24 +345,20 @@ function TelaDeDialogo:dialogoFase()
 	TelaDeDialogo:criaBotaoAnterior()
 
 	for word in string.gmatch(savedData, '([^|]+)') do
-
 		if cont==1 then
 			text=nil
 			text=word
 			cont=cont+1
-
 		elseif cont==2 then
 			locutor=nil
 			locutor=word
 			cont=cont+1
-
 		else
 			imagem=nil
 			imagem=word
 			cont=1
 			textoDialogo[contador] = {text,locutor,imagem}
 			contador=contador+1	
-
 		end
 	end
 
@@ -371,26 +375,20 @@ function TelaDeDialogo:desafios(tipoDialogo)
 	local desafioAtual=buscaDesafioAtual()
 
 	local faseAtual=buscaFaseAtual()
-
+	if faseAtual==0 then faseAtual=3 end
 	local cont = 1
 	local contador=1
 	local caminhoArquivo
 
 	for row in db:nrows("SELECT fg_dialogo FROM t_Fase WHERE id_fase="..faseAtual) do
-
 			primeiroAcesso=row.fg_dialogo
-
  	end
 
 
 	if tipoDialogo==nil then
-
 		caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..desafioAtual..sp..".txt")
-
 	else
-
 		caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..tipoDialogo..sp..".txt")
-
 	end
 
 	local arquivo = io.open(caminhoArquivo, "r")
@@ -400,7 +398,6 @@ function TelaDeDialogo:desafios(tipoDialogo)
 	arquivo = nil
 
 	if (primeiroAcesso=='true' and faseAtual>1) then
-
 		atualizarDados = [[UPDATE t_Fase SET fg_dialogo='false' WHERE id_fase=]]..id_fase
 		db:exec(atualizarDados)
 
@@ -410,10 +407,8 @@ function TelaDeDialogo:desafios(tipoDialogo)
  		end
 
 	elseif faseAtual==1 then
-
 		atualizarDados = [[UPDATE t_Fase SET fg_dialogo='false' WHERE id_fase=]]..id_fase
 		db:exec(atualizarDados)
-
 	end
 
 	aImagem = "GameDesign/DesignGrafico/Fases/TelaDialogo"..faseAtual.."/fundoDialogo.jpg"
@@ -426,25 +421,20 @@ function TelaDeDialogo:desafios(tipoDialogo)
 	TelaDeDialogo:criaBotaoAnterior()
 
 	for word in string.gmatch(savedData, '([^|]+)') do
-
 		if cont==1 then
 			text=nil
 			text=word
 			cont=cont+1
-
 		elseif cont==2 then
 			locutor=nil
 			locutor=word
 			cont=cont+1
-
 		else
 			imagem=nil
 			imagem=word
 			cont=1
 			textoDialogo[contador] = {text,locutor,imagem}
 			contador=contador+1	
-
 		end
 	end
-
 end

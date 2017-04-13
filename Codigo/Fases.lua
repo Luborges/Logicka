@@ -29,33 +29,33 @@ function scene:createScene(event)
 
   	end
 
-  	if id_fase==0 then
-  		require ("TelaDeCredito")
-  		tc = TelaDeCredito:new()
-  		tc:creditos()
+	for row in db:nrows("SELECT MIN(id_puzzle) as MIN FROM t_Puzzle WHERE id_fase = "..id_fase) do
 
-  	else
+		primeiroPuzzle = row.MIN
 
-  		for row in db:nrows("SELECT MIN(id_puzzle) as MIN FROM t_Puzzle WHERE id_fase = "..id_fase) do
+	end
 
-			primeiroPuzzle = row.MIN
+ 	for row in db:nrows("SELECT ini_x, ini_y, fg_dialogo FROM t_Fase WHERE id_fase="..id_fase) do
 
-		end
+    	ini_y = row.ini_y
+	   	ini_x = row.ini_x
+		primeiroAcesso=row.fg_dialogo
 
- 		for row in db:nrows("SELECT ini_x, ini_y, fg_dialogo FROM t_Fase WHERE id_fase="..id_fase) do
+  	end
 
-    		ini_y = row.ini_y
-	    	ini_x = row.ini_x
-			primeiroAcesso=row.fg_dialogo
+  	for row in db:nrows("SELECT ini_x, ini_y FROM t_Jogador WHERE id_jogador=1") do
 
-  		end
+		inicial_x=row.ini_x
+  		inicial_y=row.ini_y
 
-  		for row in db:nrows("SELECT ini_x, ini_y FROM t_Jogador WHERE id_jogador=1") do
+	end
 
-	  		inicial_x=row.ini_x
-  			inicial_y=row.ini_y
+	if id_fase==0 then
+		id_fase=0
+		atualizarFase3 = [[UPDATE t_Fase SET fg_dialogo='false']]
+		db:exec(atualizarFase3)
 
-	  	end
+	else
 
 		local mp = Mapa:new()
 		local map = mp:criarMapa(id_fase)
@@ -70,13 +70,18 @@ function scene:createScene(event)
 
 			local posicaoInicial = [[UPDATE t_Jogador SET ini_y=]]..ini_y..[[, ini_x=]]..ini_x..[[ WHERE id_jogador=1;]]
 			db:exec(posicaoInicial)
-
+			if id_fase>1 then
+				faseAnterior=id_fase-1
+			end
+			if faseAnterior ~=nil then
+				atualizarFase2 = [[UPDATE t_Fase SET fg_dialogo='true' WHERE id_fase=']]..faseAnterior..[[']]
+				db:exec(atualizarFase2)
+			end
 		else
 			pX=inicial_x
 			pY=inicial_y
 
 		end
-
 
 		pr = Personagem:new()
 		personagemRecebido = pr:criarPersonagem(pX, pY)
@@ -86,12 +91,12 @@ function scene:createScene(event)
 
 		cont=primeiroPuzzle
 
-  		for row in db:nrows("SELECT img_objeto, ps_x, ps_y FROM t_Puzzle WHERE id_fase="..id_fase) do
+		for row in db:nrows("SELECT img_objeto, ps_x, ps_y FROM t_Puzzle WHERE id_fase="..id_fase) do
 
-  			local obj = display.newImage("GameDesign/DesignGrafico/tilesets/"..row.img_objeto)
-  			obj:scale(1.2,1.2)
+			local obj = display.newImage("GameDesign/DesignGrafico/tilesets/"..row.img_objeto)
+			obj:scale(1.2,1.2)
 			-- Define "corpo" para o coco, para que ele possa ser afetado por ações de colisão
-  			physics.addBody(obj,"static",{radius=obj.width*.8})
+			physics.addBody(obj,"static",{radius=obj.width*.8})
 			-- Insere objeto numa layer no mapa
 			map.layer["personagem"]:insert(obj)
 			obj.x=map.data.width*row.ps_x
@@ -101,7 +106,7 @@ function scene:createScene(event)
 			objetosDeDesafio[cont].desafio=cont
 			cont=cont+1
 
-  		end
+		end
 
 		objeto(objetosDeDesafio,true)
 

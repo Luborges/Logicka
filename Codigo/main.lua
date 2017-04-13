@@ -1,4 +1,4 @@
-local sqlite3 = require ("sqlite3");
+local sqlite3 = require ("sqlite3")
 local log = require("Log")
 local storyboard = require ("storyboard")
 
@@ -11,7 +11,7 @@ local function main()
 	
 	log:log("Advanced logging module is now ready", "Comment on: http://forums.coronalabs.com/topic/50004-corona-advanced-logging/")
 
-	storyboard.gotoScene("SplashScreen")
+	storyboard.gotoScene("MenuInicial")
 
 end
 

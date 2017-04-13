@@ -146,48 +146,11 @@ local acessarJogo = function(e)
 			
 
 		elseif opcao=="continuarJogo" then
-					
-			--Inicia o audio do click
-			local soundEffect = audio.loadSound("GameDesign/Audio/Click_0.mp3")
-			audio.play( soundEffect )
-
-			require "sqlite3"
-
-			local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
-
-			local db = sqlite3.open(path) 
-    
-  			for row in db:nrows("SELECT id_fase, id_puzzle FROM t_Jogador WHERE id_jogador=1") do
 			
-				-- Exibe dados na tela
-    			id_fase = row.id_fase
-				
-			sound:add( "GameDesign/Audio/song"..row.id_fase..".mp3", "GameDesign/Audio/song"..row.id_fase)
-			sound:setVolume( 0.4 )
-			sound:play("GameDesign/Audio/song"..row.id_fase, {loops=-1} )
+			local soundEffect = audio.loadSound("GameDesign/Audio/Click_0.mp3")
+      		audio.play( soundEffect )
 
-  			end
-  		
-  			if id_fase == nil or id_fase == 0 then
-
-  				if mensagemSemSave == false then
-
-	  				require ("MensagemDeAlerta")
-					ma = MensagemDeAlerta:new()
-					mensagemSemSave = ma:alertaSemSaveGame()
-
-				end
-
-			else
-
-				--Para o audio da tela anterios caso o botao continuar seja apertado
-				sound:remover("GameDesign/Audio/Menu_music")
-
-     			storyboard.loadScene("Fases")
-
-     			storyboard.gotoScene("Fases", "crossFade", 200)
-  			
-  			end
+     		storyboard.gotoScene("Continuar")
 			
 		elseif opcao=="sair" then
 		

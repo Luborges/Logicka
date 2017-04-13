@@ -447,15 +447,14 @@ function moverBloco(self, event)
 	if event.phase == "began" then
 		
 		local soundEffect = audio.loadSound("GameDesign/Audio/pegar.mp3")
-		audio.play( soundEffect )
+		audio.play(soundEffect)
 	
-		display.getCurrentStage():setFocus( event.target )
+		display.getCurrentStage():setFocus(event.target)
 		self.markX = self.x 
 		self.markY = self.y 
 	
 	elseif event.phase == "moved" then
 
-	
 		local x = (event.x - event.xStart) + self.markX	
 		local y = (event.y - event.yStart) + self.markY
 	
@@ -539,23 +538,11 @@ j=1
 			if blocosNovos[contador]==nil then
 				contador=contador+1
 			elseif blocosNovos[contador].x <largura*.125 or blocosNovos[contador].y<altura*.107 or blocosNovos[contador].y>altura*.884 or blocosNovos[contador].x>largura*.38 then
-				print('aqui')
-				for con=1,#blocosNovos,1 do
-					print (blocosNovos[con].id)
-				end
 				table.remove(blocosNovos, contador)
-				for con=1,#blocosNovos,1 do
-					print (blocosNovos[con].id)
-				end
 			end
 		end
 		d=d+1
 	end
-		for contador=1,#blocosNovos,1 do
-			print (blocosNovos[contador].id)
-		end
---		print (blocosPosicionamento[blocosMovidos[2]].id)
-
 		novoDialogo=vf:verificar(blocosNovos,numeroDesafio,quantidadeDeBlocos,blocosMovidos)
 
 		quantidadeDeBlocos=nil
@@ -607,7 +594,7 @@ function avancarDesafio(avancar)
 	local transicao
 
 	-- Laço que irá rodar enquanto houverem linhas na tabela
-	for row in db:nrows("SELECT fg_transicao FROM t_Puzzle WHERE id_puzzle = (SELECT id_puzzle FROM t_Jogador WHERE id_jogador=1)") do
+	for row in db:nrows("SELECT fg_transicao FROM t_Puzzle WHERE id_puzzle = (SELECT id_puzzle FROM t_Jogador)") do
 
 		transicao = row.fg_transicao
 

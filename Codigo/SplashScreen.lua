@@ -10,21 +10,10 @@ local splashScreen
 function scene:createScene(event)
 	desenhaFundo()
 	grp = self.view
-	splashScreen = display.newImageRect("GameDesign/SplashScreen/ifsp.png",w/2,h/2.9)
+	splashScreen = display.newImageRect("GameDesign/DesignGrafico/SplashScreen/kscompany.png",w,h)
 	splashScreen.x = w/2
 	splashScreen.y = h/2
 	grp:insert(splashScreen)	
-	timer.performWithDelay(4000,desenhaPGP)
-end
-
--- Altera Imagem
-function desenhaPGP()
-	splashScreen:removeSelf()
-	splashScreen = nil		
-	splashScreen = display.newImageRect("GameDesign/SplashScreen/pgp.png",w/2,h/4)
-	splashScreen.x = w/2
-	splashScreen.y = h/2
-	grp:insert(splashScreen)
 end
 
 function desenhaFundo()
@@ -52,7 +41,7 @@ function scene:enterScene(event)
 		}
 		storyboard.gotoScene("MenuInicial",options)
 	end
-	timer.performWithDelay(6000,toMenu)
+	timer.performWithDelay(4000,toMenu)
 end
 
 -- Adicionando eventos

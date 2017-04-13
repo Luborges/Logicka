@@ -132,7 +132,7 @@ end
 
 function Scene:enterScene(event)
 
---cria variavel
+-- Cria variavel
   local j=1
 
   --Toda vez que clicar, será criado um evento
