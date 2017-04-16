@@ -4,6 +4,8 @@
   id_genero INTEGER NOT NULL, 
   id_fase INTEGER NOT NULL, 
   id_puzzle INTEGER NOT NULL,
+  id_puzzle_anterior INTEGER NOT NULL,
+  fg_carregar INTEGER NOT NULL DEFAULT(0),
   ini_x FLOAT NOT NULL DEFAULT (0),
   ini_y FLOAT NOT NULL DEFAULT (0)
 );
@@ -124,7 +126,7 @@ CREATE TABLE IF NOT EXISTS t_Puzzle(
   INSERT INTO t_Puzzle VALUES (2,'desafio02BaterCoco',1,'false','false',1,'true','false',0.55,0.67,'coco.png');
   INSERT INTO t_Puzzle VALUES (3,'desafio03QuebrarCoco',1,'false','false',3,'true','false',0.75,0.73,'coco.png');
   INSERT INTO t_Puzzle VALUES (4,'desafio04PlacaDireitaOuEsquerda',1,'false','false','direita','false','true',0.62,0.5,'placa.png');
-  INSERT INTO t_Puzzle VALUES (5,'desafio05AcharMadeira',2,'false','false',5,'true','false',0.33,0.4,'lenha.png');
+  INSERT INTO t_Puzzle VALUES (5,'desafio05AcharMadeira',2,'false','false',5,'true','false',0.44,0.27,'lenha.png');
   INSERT INTO t_Puzzle VALUES (6,'desafio06AcharPedras',2,'false','false',2,'true','false',0.45,0.75,'pedraAbrasiva.png');
   INSERT INTO t_Puzzle VALUES (7,'desafio07FazerFogueira',2,'false','false',5,'true','true',0.38,0.5,'cinzas.png');
   INSERT INTO t_Puzzle VALUES (8,'desafio08SubirArvore',3,'false','false',10,'true','true',0.97,0.485,'arvoreGrande.png');

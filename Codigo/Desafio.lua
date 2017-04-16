@@ -123,7 +123,7 @@ end
 function Scene:createScene(event)
 sound:stopAll(sound)
 
-	for row in db:nrows("SELECT id_puzzle FROM t_Jogador WHERE id_jogador=1") do
+	for row in db:nrows("SELECT id_puzzle FROM t_Jogador") do
 
 		numeroDesafio=row.id_puzzle
 
@@ -454,17 +454,18 @@ function moverBloco(self, event)
 		self.markY = self.y 
 	
 	elseif event.phase == "moved" then
-
-		local x = (event.x - event.xStart) + self.markX	
-		local y = (event.y - event.yStart) + self.markY
+		if self.markX~=nil then
+			local x = (event.x - event.xStart) + self.markX	
+			local y = (event.y - event.yStart) + self.markY
 	
-		self.x, self.y = x, y 
+			self.x, self.y = x, y 
 
-		varX=self.x
-		varY=self.y
-		varNome=self.name
-		varTipo=self.tipo
-		varId=self.id
+			varX=self.x
+			varY=self.y
+			varNome=self.name
+			varTipo=self.tipo
+			varId=self.id
+		end
 
 	elseif event.phase == "ended"  or event.phase == "cancelled" then
 		

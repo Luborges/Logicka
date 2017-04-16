@@ -22,39 +22,35 @@ physics.setGravity(0, 0)
 
 function scene:createScene(event)
 
-	for row in db:nrows("SELECT id_fase FROM t_Jogador WHERE id_jogador=1") do
-
+	for row in db:nrows("SELECT id_fase FROM t_Jogador") do
     	-- Exibe dados na tela
     	id_fase = row.id_fase
-
   	end
 
 	for row in db:nrows("SELECT MIN(id_puzzle) as MIN FROM t_Puzzle WHERE id_fase = "..id_fase) do
-
 		primeiroPuzzle = row.MIN
-
 	end
 
  	for row in db:nrows("SELECT ini_x, ini_y, fg_dialogo FROM t_Fase WHERE id_fase="..id_fase) do
-
     	ini_y = row.ini_y
 	   	ini_x = row.ini_x
 		primeiroAcesso=row.fg_dialogo
-
   	end
 
-  	for row in db:nrows("SELECT ini_x, ini_y FROM t_Jogador WHERE id_jogador=1") do
-
+  	for row in db:nrows("SELECT ini_x, ini_y FROM t_Jogador") do
 		inicial_x=row.ini_x
   		inicial_y=row.ini_y
-
 	end
 
 	if id_fase==0 then
 		id_fase=0
 		atualizarFase3 = [[UPDATE t_Fase SET fg_dialogo='false']]
 		db:exec(atualizarFase3)
-
+		for row in db:nrows("SELECT id_fase FROM t_Fase") do
+			atualizarFase4 = [[UPDATE t_Puzzle SET fg_liberado='true' WHERE id_puzzle=(SELECT min(id_puzzle) FROM t_Puzzle WHERE id_fase=']]..row.id_fase..[[');]]
+			db:exec(atualizarFase4)
+		end
+		storyboard.reloadScene()
 	else
 
 		local mp = Mapa:new()
@@ -73,14 +69,17 @@ function scene:createScene(event)
 				faseAnterior=id_fase-1
 			end
 		else
-			for row in db:nrows("SELECT max(id_puzzle) AS m_max FROM t_Puzzle WHERE fg_realizado='true' AND id_fase=(SELECT id_fase FROM t_Jogador);") do
+			for row in db:nrows("SELECT max(id_puzzle) AS m_max FROM t_Puzzle WHERE fg_liberado='true' AND id_fase=(SELECT id_fase FROM t_Jogador);") do
 				p_max=row.m_max
 			end
 			for row in db:nrows("SELECT min(id_puzzle) AS m_min FROM t_Puzzle WHERE id_fase=(SELECT id_fase FROM t_Jogador);") do
 				p_min=row.m_min
 			end
-
-			if p_min==p_max then
+			for row in db:nrows("SELECT id_puzzle, id_puzzle_anterior FROM t_Jogador;") do
+				i_p=row.id_puzzle
+				i_pa=row.id_puzzle_anterior
+			end
+			if p_min==p_max and i_p~=i_pa then
 				pX=ini_x
 				pY=ini_y
 			else
@@ -130,7 +129,7 @@ function scene:enterScene(event)
 --	atualizarMovimento(false)
 	storyboard.removeScene("MenuInicial")
 	storyboard.removeScene("NovoJogo")
-	storyboard.removeScene("ContinuarJogo")
+	storyboard.removeScene("Continuar")
 	storyboard.removeScene("Desafio")
 	atualizarMovimento(true)
 

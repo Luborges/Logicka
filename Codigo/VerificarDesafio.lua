@@ -311,7 +311,7 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 			desafioPr=desafioAt+1
 			local solucao=[[UPDATE t_Puzzle SET fg_realizado='true' WHERE id_puzzle =]]..desafioAt..[[;]]
 			local desbloqueio=[[UPDATE t_Puzzle SET fg_liberado='true' WHERE id_puzzle =]]..desafioPr..[[;]]
-			local avancarDesafio = [[UPDATE t_Jogador SET id_puzzle=]]..desafioPr..[[ WHERE id_jogador=1;]]
+			local avancarDesafio = [[UPDATE t_Jogador SET id_puzzle=]]..desafioPr..[[;]]
 
 
 			db:exec(avancarDesafio)

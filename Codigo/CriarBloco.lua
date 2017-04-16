@@ -83,8 +83,8 @@ function CriarBloco:blocoDecisao (blocoEixoY, blocoEixoX, numeroDoBloco,desafioA
   blocoFinalDecisao = display.newGroup();
   --local nameofrectangle = display.newRect(left-x-coordinate,top-y-coordinate,width,height)
   blocoDe=display.newImage("GameDesign/DesignGrafico/Desafio/Decisao.png")--largura*.15,altura/7
-  blocoDe.width=largura*.17
-  blocoDe.height=altura/5
+  blocoDe.width=largura*.18
+  blocoDe.height=altura/4.5
 
   require "sqlite3"
   --Variaveis referentes ao banco
@@ -201,7 +201,7 @@ function CriarBloco:blocoExibicao (blocoEixoY, blocoEixoX, numeroDoBloco,desafio
   blocoFinalExibicao = display.newGroup();
   --local nameofrectangle = display.newRect(left-x-coordinate,top-y-coordinate,width,height)
   blocoEx=display.newImage("GameDesign/DesignGrafico/Desafio/Exibicao.png")
-  blocoEx.width=largura*.16
+  blocoEx.width=largura*.17
   blocoEx.height=altura/5.7
 
   require "sqlite3"
@@ -235,7 +235,7 @@ function CriarBloco:blocoExibicao (blocoEixoY, blocoEixoX, numeroDoBloco,desafio
     y = blocoEixoX,
     width = largura/7,     -- requerido para alinhamento em multiplas linhas
     font = native.systemFontBold,   
-    fontSize = largura/44,
+    fontSize = largura/46,
     align = "right"  -- parametro de alinhamento
  }
 
@@ -262,8 +262,8 @@ function CriarBloco:blocoEntrada (blocoEixoY, blocoEixoX, numeroDoBloco,desafioA
   blocoFinalEntrada = display.newGroup();
 
   blocoEn=display.newImage("GameDesign/DesignGrafico/Desafio/EntradaDados.png")
-  blocoEn.width=largura*.14
-  blocoEn.height=altura/7
+  blocoEn.width=largura*.16
+  blocoEn.height=altura/5.5
 
   require "sqlite3"
   --Variaveis referentes ao banco

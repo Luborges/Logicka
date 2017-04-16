@@ -42,7 +42,7 @@ end
 
 function objeto(obj,flag)
 
-  	for row in db:nrows("SELECT id_fase FROM t_Jogador WHERE id_jogador=1") do
+  	for row in db:nrows("SELECT id_fase FROM t_Jogador") do
 
     	-- Exibe dados na tela
     	fase = row.id_fase
@@ -138,7 +138,6 @@ local touchFunction = function(e)
 			personagemRecebido:setSequence("baixo")
 			personagemRecebido:setSequence("move")
 			personagemRecebido:play()
-
 		elseif direcao=="direita" then
 
 			passosX=0
@@ -162,29 +161,29 @@ local touchFunction = function(e)
 			passosY=0
 			passosX=0
 
-			if colisao==false and mensagemSemColisao==false then
-
+			if (colisao==false or colisao==nil) and mensagemSemColisao==false then
 				ma = MensagemDeAlerta:new()
 				mensagemSemColisao=ma:alertaSemColisao()
-
 			else
-
 				selecionarDesafio = [[UPDATE t_Jogador SET id_puzzle=]]..objetoColidido.desafio..[[;]]
 				db:exec(selecionarDesafio)
 
 				-- Laço que irá rodar enquanto houverem linhas na tabela
 				for row in db:nrows("SELECT max(id_puzzle) AS puzzle FROM t_Puzzle WHERE fg_liberado='true' AND id_fase= (SELECT id_fase FROM t_Jogador)") do
-
 					faseLiberada = row.puzzle
-
 				end
 
 				if objetoColidido.desafio<=faseLiberada then
-
 					removerCena()
-
+					atualizarDesafioAnterior = [[UPDATE t_Jogador SET id_puzzle_anterior=]]..objetoColidido.desafio..[[;]]
+					db:exec(atualizarDesafioAnterior)
+					atualizarDesafioAnterior=nil
 					objetoColidido.desafio=nil
-			
+				else
+					if mensagemSemColisao==false then
+						ma = MensagemDeAlerta:new()
+						mensagemSemColisao=ma:alertaColisaoSuperior()
+					end
 				end			
 			end
 		end
@@ -234,6 +233,7 @@ local j=1
 		atualizarPosicao = [[UPDATE t_Jogador SET ini_x=]]..personagemRecebido.x..[[, ini_y=]]..personagemRecebido.y..[[;]]
 		db:exec(atualizarPosicao)
 
+
 	end
 
 	colisao=nil
@@ -266,14 +266,13 @@ function verificarColisao(self, event)
 end
 
 --Atualizar posição do jogador
-local function update()
+function update()
 	if personagemRecebido==nil then
 		passosX=0
 		passosY=0
 	else
 		personagemRecebido.x=personagemRecebido.x + passosX
 		personagemRecebido.y=personagemRecebido.y + passosY
-
 		map.setCameraFocus(personagemRecebido)
 	end
 end

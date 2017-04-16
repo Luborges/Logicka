@@ -37,11 +37,11 @@ function scene:enterScene(event)
 		local options = {
 			
 			effect = "crossFade",
-			time = 2000,
+			time = 1000,
 		}
 		storyboard.gotoScene("MenuInicial",options)
 	end
-	timer.performWithDelay(4000,toMenu)
+	timer.performWithDelay(1000,toMenu)
 end
 
 -- Adicionando eventos

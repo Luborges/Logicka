@@ -7,10 +7,6 @@ local timer = require("timer")
 local textoDeCredito = {}
 local Sons = require("Sons")
 local sound = Sons:new{1,2,3}
-sound:stopAll(sound)
-sound:add("GameDesign/Audio/Credito.mp3", "GameDesign/Audio/Credito")
-sound:setVolume(0.8)
-sound:play("GameDesign/Audio/Credito", {loops=-1})
 
 TelaDeCredito = {}
 
@@ -33,16 +29,24 @@ end
 
 -- metodo que move o texto
 function TelaDeCredito:moveTexto(oIndice)
-
+	sound:stopAll(sound)
+	sound:add("GameDesign/Audio/Credito.mp3", "GameDesign/Audio/Credito")
+	sound:setVolume(0.8)
+	sound:play("GameDesign/Audio/Credito", {loops=-1})
 	TelaDeCredito:criaTexto(textoDeCredito[oIndice])
-	transition.to(texto, {time = 30000, y = display.contentHeight*-1.5,
+	transition.to(texto, {time = 60000, y = display.contentHeight*-1.5,
 	onComplete = function ()
-
-					-- Retorna a splashScreen
-						local storyboard = require "storyboard"
-						storyboard.gotoScene("SplashScreen")
-						display.setDefault:removeSelf()
-				 end})
+			-- Retorna a splashScreen
+			local storyboard = require ("storyboard")
+			atualizarMovimento(false)
+			objeto(objetosDeDesafio,false)
+			storyboard.removeScene("Desafio")
+			Runtime:removeEventListener("enterFrame", update)
+			storyboard.removeAll()
+			storyboard.gotoScene("SplashScreen")
+			passosX=0
+			passosY=0
+			end})
 end
 
 -- metodo que cria os creditos
@@ -64,11 +68,17 @@ function TelaDeCredito:creditos()
 						"- Lucas de Souza Mendes Borges \n"..
 						"- Wesley Antonioli Rueda\n\n"..
 						
-						" Obrigado por Jogar.\n"..
+						"Todos os áudios aqui apresentados\n"..
+						"foram obtidos em: http://opengameart.org\n\n"..
+
+						"Logicka é software Livre, participe e apoie em:\n"..
+						"https://logickapgp.wordpress.com\n\n"..
+
+						" Obrigado por jogar.\n"..
 						" \n"
 
 	for indice = 1,table.getn(textoDeCredito),1 do
 		
-		timer.performWithDelay(2500,TelaDeCredito:moveTexto(indice))
+		timer.performWithDelay(500,TelaDeCredito:moveTexto(indice))
 	end
 end

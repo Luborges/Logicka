@@ -1,15 +1,18 @@
 --Novo Jogo
 
 local storyboard = require ("storyboard")
-
 local Scene = storyboard.newScene()
-
-  Scene:addEventListener("createScene", Scene)
-  Scene:addEventListener("enterScene", Scene)
+Scene:addEventListener("createScene", Scene)
+Scene:addEventListener("enterScene", Scene)
+local widget = require("widget")
 
 -- Calcula largura e altura da tela
-  local largura = display.contentWidth
-  local altura = display.contentHeight
+local largura = display.contentWidth
+local altura = display.contentHeight
+
+require ("sqlite3")
+local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
+local db = sqlite3.open(path) 
 
 --Cria cena
 function Scene:createScene(event)
@@ -39,7 +42,7 @@ function Scene:createScene(event)
 
   caixaDeDialogoOp = 
   {
-    text = "Você acordou em uma ilha sem certeza de onde esta, com certa dificuldade você tenta se lembrar se você é um garoto ou uma garota!",     
+    text = "Você acordou em uma ilha sem certeza de onde está, com certa dificuldade você tenta se lembrar se você é um garoto ou uma garota!",     
     x = -largura/100,
     y = caixaDeDialogo.height,
     width = largura/1.066, -- Para alinhar texto com mais de uma linha
@@ -62,8 +65,8 @@ function Scene:createScene(event)
   --Botão de Novo Jogo
   selecionarGenero[1] = display.newImage("GameDesign/DesignGrafico/NovoPersonagem/menino.png")
   --Tamanho do botão
-  selecionarGenero[1].width=largura*.2
-  selecionarGenero[1].height=altura*.6
+  selecionarGenero[1].width=largura*.32
+  selecionarGenero[1].height=altura*.55 
   selecionarGenero[1].x=largura*.27
   selecionarGenero[1].y=altura*.3
   selecionarGenero[1].myName="Masculino"
@@ -71,39 +74,84 @@ function Scene:createScene(event)
   --Botão de Continuar Jogo
   selecionarGenero[2] = display.newImage("GameDesign/DesignGrafico/NovoPersonagem/menina.png")
   --Tamanho do botão
-  selecionarGenero[2].width=largura*.2
-  selecionarGenero[2].height=altura*.6
+  selecionarGenero[2].width=largura*.32
+  selecionarGenero[2].height=altura*.55
   selecionarGenero[2].x=largura*.72
   selecionarGenero[2].y=altura*.3
   selecionarGenero[2].myName="Feminino"
   
+  criaBotaoVoltarTela()
+
+  for row in db:nrows("SELECT id_puzzle FROM t_Jogador") do
+      id_puzzle=row.id_puzzle
+  end
+
+  if id_puzzle ~=nil then
+    if id_puzzle > 1 then
+      require ("MensagemDeAlerta")
+      ma = MensagemDeAlerta:new()
+      ma:alertaApagarJogo() 
+    end
+  end
+
 end
 
+-- Metodo que cria o botão fechar 
+function criaBotaoVoltarTela()
+
+  botaoVoltarTela = widget.newButton{   
+  -- Adiciona imagem 
+    defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela.png",
+    overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela.png",
+    
+  --Posição do botão em x e y
+    x = display.contentWidth/1.09,
+    y = display.contentHeight/9.9,
+
+  --Define tamanho do botão em pixels
+    width = display.contentWidth/7,
+    height = display.contentWidth/11,
+  --função para o botão
+    onRelease = voltarMenu
+  }
+  botaoVoltarTela:toFront()
+
+end
+
+function voltarMenu()
+  botaoVoltarTela:removeSelf()
+  caixaDeDialogo:removeSelf()
+  fundoDaTela:removeSelf()
+  storyboard.removeAll()
+
+  for j=1, #selecionarGenero do
+  
+  selecionarGenero[j]:removeSelf()
+  
+  end
+  storyboard.gotoScene("MenuInicial")
+  storyboard.removeScene("NovoJogo")
+
+end
 
 --Cria função de toque
 local touchFunction = function(e)
   local opcao = e.target.myName
 
   --Se o botão for precionado o movido
-  if e.phase =="began" or e.phase == "moved" then
-
-      require "sqlite3"
-
-      local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
-
-      local db = sqlite3.open(path)   
+  if e.phase =="began" or e.phase == "moved" then  
 
     -- Se o botão Novo Jogo for tocado
     if opcao=="Masculino" then
 
-      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 1, 1, 1, 1248, 958)]]
+      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 1, 1, 1, 0, 'false', 1248, 958)]]
       db:exec(atualizarTabela)
       atualizarDesafio = [[UPDATE t_Puzzle SET fg_realizado='false', fg_liberado='false']]
       db:exec(atualizarDesafio)
 
     elseif opcao=="Feminino" then
 
-      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 2, 1, 1, 1248, 958)]] 
+      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 2, 1, 1, 0, 'false', 1248, 958)]] 
       db:exec(atualizarTabela)
       atualizarDesafio = [[UPDATE t_Puzzle SET fg_realizado='false', fg_liberado='false']]
       db:exec(atualizarDesafio)
@@ -117,17 +165,18 @@ local touchFunction = function(e)
 
   end
 
+  botaoVoltarTela:removeSelf()
   caixaDeDialogo:removeSelf()
   fundoDaTela:removeSelf()
+  storyboard.removeAll()
 
   for j=1, #selecionarGenero do
   
   selecionarGenero[j]:removeSelf()
   
   end
-    
     storyboard.gotoScene("Fases")
-
+    storyboard.removeScene("NovoJogo")
 end
 
 function Scene:enterScene(event)
@@ -142,6 +191,12 @@ function Scene:enterScene(event)
     selecionarGenero[j]:addEventListener("touch", touchFunction)
   
   end
+
+end
+
+function Scene:exitScene(event)
+    storyboard.removeScene("NovoJogo")
+    storyboard.removeAll()
 
 end
 

@@ -60,6 +60,65 @@ function criaBotaoFechar()
 
 end
 
+-- Metodo que cria o botão fechar 
+function criaBotaoSim()
+
+ 	botaoSim = widget.newButton{		
+ 	-- Adiciona imagem 
+ 		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim.png",
+ 		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim.png",
+ 		
+ 	--Posição do botão em x e y
+ 		x = display.contentWidth*.35,
+ 		y = display.contentHeight/1.35,
+
+ 	--Define tamanho do botão em pixels
+ 		width = display.contentWidth/10,
+ 		height = display.contentWidth/10,
+ 	--função para o botão
+ 		onRelease = fechaAlerta
+ 	}
+ 	botaoSim:toFront()
+
+end
+
+-- Metodo que cria o botão fechar 
+function criaBotaoNao()
+
+ 	botaoNao = widget.newButton{		
+ 	-- Adiciona imagem 
+ 		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao.png",
+ 		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao.png",
+ 		
+ 	--Posição do botão em x e y
+ 		x = display.contentWidth*.63,
+ 		y = display.contentHeight/1.35,
+
+ 	--Define tamanho do botão em pixels
+ 		width = display.contentWidth/10,
+ 		height = display.contentWidth/10,
+ 	--função para o botão
+ 		onRelease = retornarMenu
+ 	}
+ 	botaoNao:toFront()
+
+end
+
+function retornarMenu()
+	fechaAlerta()
+	caixaDeDialogo:removeSelf()
+    fundoDaTela:removeSelf()
+
+    for j=1, #selecionarGenero do
+    	selecionarGenero[j]:removeSelf()
+    end
+
+	botaoVoltarTela:removeSelf()
+	
+	local storyboard = require ("storyboard")
+	storyboard.gotoScene("MenuInicial")
+end
+
 -- Metodo que fecha caixa de dialogo
 function fechaAlerta()	
 	--matar objetos de tela e limpar memoria
@@ -67,15 +126,39 @@ function fechaAlerta()
 		caixaDeAlerta = nil
 		texto:removeSelf()
 		texto = nil
-		botaoFechar:removeSelf()
+		if botaoFechar ~=nil then botaoFechar:removeSelf() end
 		botaoFechar = nil	
 		mensagemSemColisao=false
 		mensagemSemSave=false
+		if botaoSim ~=nil then botaoSim:removeSelf() end
+		botaoSim=nil
+		if botaoNao ~=nil then botaoNao:removeSelf() end
+		botaoNao=nil
 end
 
 -- Alerta save não encontrado 
 function MensagemDeAlerta:alertaSemSaveGame()
-		local mensagem = "Você não possui um\nSave Game!\nPor favor inicie um Novo Jogo." 
+		local mensagem = "Você não possui um\n Jovo Salvo!\nPor favor inicie um Novo Jogo." 
+		criaCaixaDeAlerta()
+		criaTexto(mensagem)	
+		criaBotaoFechar()
+
+		return true
+end
+
+-- Alerta de deleção
+function MensagemDeAlerta:alertaApagarJogo()
+		local mensagem = "Caso prossiga seu jogo atual será apagado.\nTem certeza que deseja continuar?" 
+		criaCaixaDeAlerta()
+		criaTexto(mensagem)	
+		criaBotaoSim()
+		criaBotaoNao()
+		return true
+end
+
+-- Alerta não tocou em nada 
+function MensagemDeAlerta:alertaSemColisao()
+		local mensagem = "Nada de interessante aqui..." 
 		criaCaixaDeAlerta()
 		criaTexto(mensagem)	
 		criaBotaoFechar()
@@ -84,8 +167,8 @@ function MensagemDeAlerta:alertaSemSaveGame()
 end
 
 -- Alerta não tocou em nada 
-function MensagemDeAlerta:alertaSemColisao()
-		local mensagem = "Nada de Interessante aqui..." 
+function MensagemDeAlerta:alertaColisaoSuperior()
+		local mensagem = "Acho melhor irmos em outro lugar antes.\nDepois podemos voltar aqui" 
 		criaCaixaDeAlerta()
 		criaTexto(mensagem)	
 		criaBotaoFechar()

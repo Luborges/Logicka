@@ -1,19 +1,26 @@
 local sqlite3 = require ("sqlite3")
-local log = require("Log")
 local storyboard = require ("storyboard")
 
 local function main()
-	
-	local path = system.pathForFile("sample.db", system.DocumentsDirectory)
-	db = sqlite3.open(path)
-
-	log:set(db, "logickapgp@gmail.com")
-	
-	log:log("Advanced logging module is now ready", "Comment on: http://forums.coronalabs.com/topic/50004-corona-advanced-logging/")
-
-	storyboard.gotoScene("MenuInicial")
+ 
+	storyboard.gotoScene("SplashScreen")
 
 end
+
+local function myUnhandledErrorListener( event )
+ 
+    local iHandledTheError = true
+ 
+    if iHandledTheError then
+        print(event.errorMessage)
+    else
+        print(event.errorMessage)
+    end
+    
+    return iHandledTheError
+end
+
+Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
 
 main();
 

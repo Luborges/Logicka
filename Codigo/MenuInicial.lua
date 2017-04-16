@@ -6,8 +6,9 @@ sound:stopAll(sound)
 sound:add("GameDesign/Audio/Menu_music.mp3", "GameDesign/Audio/Menu_music")
 sound:setVolume(0.8)
 sound:play("GameDesign/Audio/Menu_music", {loops=-1})
-
-
+require "sqlite3"
+local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
+local db = sqlite3.open(path)
 local storyboard = require ("storyboard")
 local Scene = storyboard.newScene()
 
@@ -23,6 +24,10 @@ local logo
 local botoesMenu = {}
 mensagemSemSave=false
 
+for row in db:nrows("SELECT id_puzzle FROM t_Jogador") do
+    id_puzzle = row.id_puzzle
+end
+
 function Scene:exitScene(event)
 
 	-- Remove evento que foi iniciado na função enterScene
@@ -34,7 +39,8 @@ function Scene:exitScene(event)
 	botoesMenu[1]:removeSelf()
 	botoesMenu[2]:removeSelf()
 	botoesMenu[3]:removeSelf()
-
+	storyboard.removeScene("MenuInicial")
+	storyboard.removeAll()
 end
 
 -- Cria cena
@@ -132,7 +138,6 @@ local acessarJogo = function(e)
 
 		-- Se o botão Novo Jogo for tocado
 		if opcao=="novoJogo" then
-
 			--Para o audio da tela anterior caso o botao novo jogo seja apertado
 			sound:remover( "GameDesign/Audio/Menu_music")
 			
@@ -141,17 +146,23 @@ local acessarJogo = function(e)
 			audio.play( soundEffect )
 		
      		local storyboard = require "storyboard"
-  
      		storyboard.gotoScene("NovoJogo")
 			
 
 		elseif opcao=="continuarJogo" then
-			
-			local soundEffect = audio.loadSound("GameDesign/Audio/Click_0.mp3")
-      		audio.play( soundEffect )
+			if id_puzzle == nil or id_puzzle == 1 then
+				if mensagemSemSave == false then
+            		require ("MensagemDeAlerta")
+          			ma = MensagemDeAlerta:new()
+          			mensagemSemSave = ma:alertaSemSaveGame()
+		        end
+			else
+				local soundEffect = audio.loadSound("GameDesign/Audio/Click_0.mp3")
+    	  		audio.play( soundEffect )
 
-     		storyboard.gotoScene("Continuar")
-			
+	     		storyboard.gotoScene("Continuar")
+			end
+
 		elseif opcao=="sair" then
 		
 			function quit() 
@@ -197,8 +208,8 @@ end
 function callbackMoverCeu(self,event)
 	
 	--Ceu se move na tela a cada vez que a função for chamada
-	if self.x < largura*.5-self.contentWidth+10 then
-		self.x = (largura*.5+self.contentWidth-30)
+	if self.x < largura*.5-self.contentWidth+1 then
+		self.x = (largura*.5+self.contentWidth-1)
 	
 	else
 		

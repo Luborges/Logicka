@@ -68,14 +68,14 @@ function Personagem:criarPersonagem(posicaoInicialX, posicaoInicialY)
 
 	local sequenceData = {
 
-		{name = "paradoBaixo", frames={1}, time = 20, loopCount=1},
-		{name = "paradoDireita", frames={7}, time = 20, loopCount=1},
-		{name = "paradoCima", frames={10}, time = 20, loopCount=1},
-		{name = "paradoEsquerda", frames={4}, time = 20, loopCount=1},
-		{name = "baixo", frames={2,3,2}, time=400, loopCount=30}, -- Indica a movimentação do personagem para baixo
-		{name = "direita", frames={7,8,9}, time=400, loopCount=30}, -- Indica a movimentação do personagem para a direita
-		{name = "cima", frames={11,12,11}, time=400, loopCount=30}, -- Indica a movimentação do personagem para cima
-		{name = "esquerda", frames={4,5,6}, time=500, loopCount=30}, -- Indica a movimentação do personagem para a esquerda
+		{name = "paradoBaixo", frames={1}, time = 1, loopCount=1},
+		{name = "paradoDireita", frames={7}, time = 1, loopCount=1},
+		{name = "paradoCima", frames={10}, time = 1, loopCount=1},
+		{name = "paradoEsquerda", frames={4}, time = 1, loopCount=1},
+		{name = "baixo", frames={2,3}, time=280, loopCount=30}, -- Indica a movimentação do personagem para baixo
+		{name = "direita", frames={8,9,7}, time=300, loopCount=30}, -- Indica a movimentação do personagem para a direita
+		{name = "cima", frames={11,12}, time=280, loopCount=30}, -- Indica a movimentação do personagem para cima
+		{name = "esquerda", frames={5,6,4}, time=300, loopCount=30}, -- Indica a movimentação do personagem para a esquerda
 
 	}
 
