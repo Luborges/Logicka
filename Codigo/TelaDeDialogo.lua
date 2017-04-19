@@ -21,6 +21,10 @@ sound:add( "GameDesign/Audio/Dialogo_inicial.mp3", "GameDesign/Audio/Dialogo_ini
 sound:setVolume( 0.4 )
 sound:play("GameDesign/Audio/Dialogo_inicial", {loops=-1} )
 
+for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+   	ds_idioma = row.ds_idioma
+end
+
 -- Classe
 TelaDeDialogo = {}
 
@@ -56,17 +60,11 @@ function buscaFaseAtual()
 	local desafio 
 
 	for row in db:nrows("SELECT id_fase FROM t_Jogador") do 
-		
 		if row.id_fase == nil then
-
 			fase=1
-
 		else
-
 			fase=row.id_fase 
-
 		end
-
 	end
 
 	return fase
@@ -185,7 +183,7 @@ end
 -- Metodo que cria o botão Anterior 
 function TelaDeDialogo:criaBotaoPular()
 	--Botão de Pular diálogo
-	botaoPular = display.newImage("GameDesign/DesignGrafico/CaixaDialogo/botaoPular.png") -- cima
+	botaoPular = display.newImage("GameDesign/DesignGrafico/CaixaDialogo/botao"..ds_idioma.."Pular.png") -- cima
 	--Cria botão para cima atraves de uma imagem
 	botaoPular.x = largura *.2
 	--Eixo x do botão
@@ -343,7 +341,7 @@ function TelaDeDialogo:dialogoFase()
 	local cont = 1
 	local contador=1
 
-	local caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/dialogoInicial"..sp..faseAtual..".txt")
+	local caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..ds_idioma.."/dialogoInicial"..sp..faseAtual..".txt")
 
 	local arquivo = io.open(caminhoArquivo, "r")
 	local savedData = arquivo:read("*a")
@@ -401,10 +399,14 @@ function TelaDeDialogo:desafios(tipoDialogo)
 			primeiroAcesso=row.fg_dialogo
  	end
 
+	for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    	ds_idioma = row.ds_idioma
+	end
+
 	if tipoDialogo==nil then
-		caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..desafioAtual..sp..".txt")
+		caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..ds_idioma.."/"..desafioAtual..sp..".txt")
 	else
-		caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..tipoDialogo..sp..".txt")
+		caminhoArquivo = system.pathForFile("GameDesign/DesignGrafico/Dialogos/"..ds_idioma.."/"..tipoDialogo..sp..".txt")
 	end
 
 	local arquivo = io.open(caminhoArquivo, "r")

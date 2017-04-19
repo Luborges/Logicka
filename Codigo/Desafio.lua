@@ -38,9 +38,11 @@ local vf = VerificarDesafio:new()
 
 -- Laço que irá rodar enquanto houverem linhas na tabela
 for row in db:nrows("SELECT id_fase FROM t_Jogador WHERE id_jogador=1") do
-
 	fase = row.id_fase
+end
 
+for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    ds_idioma = row.ds_idioma
 end
 
 function Scene:exitScene(event)
@@ -422,14 +424,14 @@ sound:stopAll(sound)
 
 	end
 
-	blocoInicio=display.newImage("GameDesign/DesignGrafico/Desafio/inicio.png")
+	blocoInicio=display.newImage("GameDesign/DesignGrafico/Desafio/inicio"..ds_idioma..".png")
 	blocoInicio.width=largura*.13
 	blocoInicio.height=altura*.09
 	blocoInicio.x=largura*.14
 	blocoInicio.y=altura*.08
 	screenGroup:insert(blocoInicio)
 
-	blocoFim=display.newImage("GameDesign/DesignGrafico/Desafio/fim.png")
+	blocoFim=display.newImage("GameDesign/DesignGrafico/Desafio/fim"..ds_idioma..".png")
 	blocoFim.width=largura*.13
 	blocoFim.height=altura*.09
 	blocoFim.x=largura*.35

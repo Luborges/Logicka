@@ -1,0 +1,2 @@
+﻿Wait, wait, wait!|Narrator|GameDesign/DesignGrafico/Fases/TelaDialogo2/fundoDialogo.jpg|What are you doing?|Narrator|GameDesign/DesignGrafico/Fases/TelaDialogo2/fundoDialogo.jpg|If you do not find wood you will die of cold.|Narrator|GameDesign/DesignGrafico/Fases/TelaDialogo2/fundoDialogoSono01F.jpg|Do not be lazy and try again.|Narrator|GameDesign/DesignGrafico/Fases/TelaDialogo2/fundoDialogoSono01F.jpg|fim|Narrator|GameDesign/DesignGrafico/Fases/TelaDialogo2/fundoDialogo00.jpg
+

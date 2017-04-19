@@ -1,4 +1,4 @@
---Botões
+-- Botões
 
 -- meta Classe
 Controle= {}
@@ -7,7 +7,7 @@ Controle= {}
 require ("sqlite3")
 require ("MensagemDeAlerta")
 
---Define a fisica do programa
+-- Define a fisica do programa
 local fisica = require("physics")
 
 fisica.start()
@@ -161,7 +161,7 @@ local touchFunction = function(e)
 			passosY=0
 			passosX=0
 
-			if (colisao==false or colisao==nil) and mensagemSemColisao==false then
+			if (colisao==false or objetoColidido==nil) and mensagemSemColisao==false then
 				ma = MensagemDeAlerta:new()
 				mensagemSemColisao=ma:alertaSemColisao()
 			else
@@ -178,7 +178,6 @@ local touchFunction = function(e)
 					atualizarDesafioAnterior = [[UPDATE t_Jogador SET id_puzzle_anterior=]]..objetoColidido.desafio..[[;]]
 					db:exec(atualizarDesafioAnterior)
 					atualizarDesafioAnterior=nil
-					objetoColidido.desafio=nil
 				else
 					if mensagemSemColisao==false then
 						ma = MensagemDeAlerta:new()
@@ -236,7 +235,6 @@ local j=1
 
 	end
 
-	colisao=nil
 	passosY=0
 	passosX=0
 	personagemRecebido.x=nil
@@ -244,7 +242,6 @@ local j=1
 	personagemRecebido:removeSelf()
 	personagemRecebido=nil
 	mensagemSemColisao=false
-
 	storyboard.gotoScene("Desafio")
 
 end

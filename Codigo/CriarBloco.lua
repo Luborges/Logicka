@@ -159,11 +159,20 @@ function CriarBloco:blocoIteracao (blocoEixoY, blocoEixoX, numeroDoBloco,desafio
 
   numeroDoBloco=numeroDoBloco-1+blocoNovo
 
+  for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    ds_idioma = row.ds_idioma
+  end
+
   -- Laço que irá rodar enquanto houverem linhas na tabela
   for row in db:nrows("SELECT id_looping, vlr_inicial, vlr_final, vlr_incremento, ds_looping FROM t_Looping WHERE id_puzzle="..desafioAtual.." AND id_looping="..numeroDoBloco) do
 
+  if ds_idioma =='pt-br' then
     -- Exibe dados na tela
-  blocoTextoIt = "De: "..row.vlr_inicial.."\nAté: "..row.vlr_final.."\nPasso: "..row.vlr_incremento
+    blocoTextoIt = "De: "..row.vlr_inicial.."\nAté: "..row.vlr_final.."\nPasso: "..row.vlr_incremento
+  elseif ds_idioma =='eng' then
+    blocoTextoIt = "For: "..row.vlr_inicial.."\nTo: "..row.vlr_final.."\nAdd: "..row.vlr_incremento
+  end
+
   id=row.id_looping
 
   end

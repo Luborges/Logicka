@@ -7,7 +7,8 @@
   id_puzzle_anterior INTEGER NOT NULL,
   fg_carregar INTEGER NOT NULL DEFAULT(0),
   ini_x FLOAT NOT NULL DEFAULT (0),
-  ini_y FLOAT NOT NULL DEFAULT (0)
+  ini_y FLOAT NOT NULL DEFAULT (0),
+  ds_idioma VARCHAR (10) NOT NULL
 );
 
   CREATE TABLE IF NOT EXISTS t_Decisao(
@@ -115,8 +116,8 @@ CREATE TABLE IF NOT EXISTS t_Puzzle(
   
   INSERT OR REPLACE INTO t_Operacao VALUES (1,'-',3,'batidasNoCoco',1,'Bater = Bater');
   INSERT OR REPLACE INTO t_Operacao VALUES (2,'+',3,'batidasNoCoco',2,'Bater = Bater');
-  INSERT OR REPLACE INTO t_Operacao VALUES (3,'+',5,'madeiraRecolhida',2,'Recolher = Recolher');
-  INSERT OR REPLACE INTO t_Operacao VALUES (4,'+',5,'madeiraRecolhida',2,'Recolher = Recolher');
+  INSERT OR REPLACE INTO t_Operacao VALUES (3,'+',5,'madeiraRecolhida',2,'Pegar = Pegar');
+  INSERT OR REPLACE INTO t_Operacao VALUES (4,'+',5,'madeiraRecolhida',2,'Pegar = Pegar');
   INSERT OR REPLACE INTO t_Operacao VALUES (5,'+',6,'pedraRecolhida',2,'Pegar = Pegar');
   INSERT OR REPLACE INTO t_Operacao VALUES (6,'-',6,'pedraRecolhida',1,'Pegar = Pegar');
   INSERT OR REPLACE INTO t_Operacao VALUES (7,'+',7,'baterPedra',1,'Bater Pedra = Bater Pedra');
@@ -130,5 +131,7 @@ CREATE TABLE IF NOT EXISTS t_Puzzle(
   INSERT INTO t_Puzzle VALUES (6,'desafio06AcharPedras',2,'false','false',2,'true','false',0.45,0.75,'pedraAbrasiva.png');
   INSERT INTO t_Puzzle VALUES (7,'desafio07FazerFogueira',2,'false','false',5,'true','true',0.38,0.5,'cinzas.png');
   INSERT INTO t_Puzzle VALUES (8,'desafio08SubirArvore',3,'false','false',10,'true','true',0.97,0.485,'arvoreGrande.png');
+
+  INSERT INTO t_Jogador VALUES (1, 1, 1, 1, 0, 'false', 1248, 958,'pt-br');
 
 COMMIT;

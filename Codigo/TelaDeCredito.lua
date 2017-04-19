@@ -1,4 +1,6 @@
 require "sqlite3"
+local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
+local db = sqlite3.open(path)
 local composer = require("composer")
 local scene = composer.newScene()
 local widget = require("widget")
@@ -7,6 +9,9 @@ local timer = require("timer")
 local textoDeCredito = {}
 local Sons = require("Sons")
 local sound = Sons:new{1,2,3}
+for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    ds_idioma = row.ds_idioma
+end
 
 TelaDeCredito = {}
 
@@ -52,9 +57,9 @@ end
 -- metodo que cria os creditos
 function TelaDeCredito:creditos()
 	local indice
-
-	display.setDefault( "background", 0, 0, 0 )
-	textoDeCredito[1] = "E assim, como o bom aventureiro \n"..
+	local text
+	if ds_idioma=='pt-br' then
+		text = "E assim, como o bom aventureiro \n"..
 	 					"que precisará ser, \n"..
 						"nosso heroi avançou nessa nova rota. \n"..
 						"Certo de que encontraria respostas, \n"..
@@ -76,6 +81,33 @@ function TelaDeCredito:creditos()
 
 						" Obrigado por jogar.\n"..
 						" \n"
+	elseif ds_idioma=='eng' then
+		text =  "And so, as the good adventurer \n"..
+	 					"who our hero needs to be, \n"..
+						"Our hero has advanced on this new route. \n"..
+						"Looking for answers, \n"..
+						"And a path to home. \n\n\n\n".. 	
+						"The adventure continues... \n\n\n\n"..
+						"            -- LOGICKA -- \n\n"..	
+						"Team: \n\n"..
+						"- Alessandra Mitie Kikuchi \n"..
+						"- Daniel Coelho da Silva \n"..
+						"- Eliel dos Santos Silva \n"..
+						"- Lucas de Souza Mendes Borges \n"..
+						"- Wesley Antonioli Rueda\n\n"..
+						
+						"All audios presented here\n"..
+						"were obtained in: http://opengameart.org\n\n"..
+
+						"Logicka is open source, support in:\n"..
+						"https://logickapgp.wordpress.com\n\n"..
+
+						" Thanks for playing.\n"..
+						" \n"
+	end
+
+	display.setDefault( "background", 0, 0, 0 )
+	textoDeCredito[1] = text
 
 	for indice = 1,table.getn(textoDeCredito),1 do
 		

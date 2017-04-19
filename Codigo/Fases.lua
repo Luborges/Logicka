@@ -137,7 +137,7 @@ end
 
 --Remove eventos e objetos da cena
 function scene:exitScene(event)
-
+	objetoColidido=nil
   	if id_fase~=0 then
 
 		map:removeSelf()

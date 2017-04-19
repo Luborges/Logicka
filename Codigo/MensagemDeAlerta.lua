@@ -2,7 +2,13 @@ local widget = require("widget")
 local texto
 local caixaDeAlerta
 local botaoFechar
+require "sqlite3"
+local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
+local db = sqlite3.open(path)
 
+for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    ds_idioma = row.ds_idioma
+end
 -- classe
 MensagemDeAlerta = {}
 
@@ -65,8 +71,8 @@ function criaBotaoSim()
 
  	botaoSim = widget.newButton{		
  	-- Adiciona imagem 
- 		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim.png",
- 		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim.png",
+ 		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim"..ds_idioma..".png",
+ 		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim"..ds_idioma..".png",
  		
  	--Posição do botão em x e y
  		x = display.contentWidth*.35,
@@ -87,8 +93,8 @@ function criaBotaoNao()
 
  	botaoNao = widget.newButton{		
  	-- Adiciona imagem 
- 		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao.png",
- 		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao.png",
+ 		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao"..ds_idioma..".png",
+ 		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao"..ds_idioma..".png",
  		
  	--Posição do botão em x e y
  		x = display.contentWidth*.63,
@@ -122,56 +128,76 @@ end
 -- Metodo que fecha caixa de dialogo
 function fechaAlerta()	
 	--matar objetos de tela e limpar memoria
-		caixaDeAlerta:removeSelf()
-		caixaDeAlerta = nil
-		texto:removeSelf()
-		texto = nil
-		if botaoFechar ~=nil then botaoFechar:removeSelf() end
-		botaoFechar = nil	
-		mensagemSemColisao=false
-		mensagemSemSave=false
-		if botaoSim ~=nil then botaoSim:removeSelf() end
-		botaoSim=nil
-		if botaoNao ~=nil then botaoNao:removeSelf() end
-		botaoNao=nil
+	caixaDeAlerta:removeSelf()
+	caixaDeAlerta = nil
+	texto:removeSelf()
+	texto = nil
+	if botaoFechar ~=nil then botaoFechar:removeSelf() end
+	botaoFechar = nil	
+	mensagemSemColisao=false
+	mensagemSemSave=false
+	if botaoSim ~=nil then botaoSim:removeSelf() end
+	botaoSim=nil
+	if botaoNao ~=nil then botaoNao:removeSelf() end
+	botaoNao=nil
 end
 
 -- Alerta save não encontrado 
 function MensagemDeAlerta:alertaSemSaveGame()
-		local mensagem = "Você não possui um\n Jovo Salvo!\nPor favor inicie um Novo Jogo." 
-		criaCaixaDeAlerta()
-		criaTexto(mensagem)	
-		criaBotaoFechar()
+	local mensagem
+	if ds_idioma=='pt-br' then
+		mensagem = "Você não possui um\n Jovo Salvo!\nPor favor inicie um Novo Jogo." 
+	elseif ds_idioma=='eng' then
+		mensagem = "You don't have a \n Game Saved!\n Please, start a New Game."
+	end
+	criaCaixaDeAlerta()
+	criaTexto(mensagem)	
+	criaBotaoFechar()
 
-		return true
+	return true
 end
 
 -- Alerta de deleção
 function MensagemDeAlerta:alertaApagarJogo()
-		local mensagem = "Caso prossiga seu jogo atual será apagado.\nTem certeza que deseja continuar?" 
-		criaCaixaDeAlerta()
-		criaTexto(mensagem)	
-		criaBotaoSim()
-		criaBotaoNao()
-		return true
+	local mensagem
+	if ds_idioma=='pt-br' then
+		mensagem = "Caso prossiga seu jogo atual será apagado.\nTem certeza que deseja continuar?"
+	elseif ds_idioma=='eng' then
+		mensagem = "If you continue your current game will be deleted.\nAre you sure you want to continue?"
+	end
+	criaCaixaDeAlerta()
+	criaTexto(mensagem)	
+	criaBotaoSim()
+	criaBotaoNao()
+	return true
 end
 
 -- Alerta não tocou em nada 
 function MensagemDeAlerta:alertaSemColisao()
-		local mensagem = "Nada de interessante aqui..." 
-		criaCaixaDeAlerta()
-		criaTexto(mensagem)	
-		criaBotaoFechar()
+	local mensagem
+	if ds_idioma=='pt-br' then
+		mensagem = "Nada de interessante aqui..." 
+	elseif ds_idioma=='eng' then
+		mensagem = "Nothing interesting here..."
+	end
+	criaCaixaDeAlerta()
+	criaTexto(mensagem)	
+	criaBotaoFechar()
 
-		return true
+	return true
 end
 
 -- Alerta não tocou em nada 
 function MensagemDeAlerta:alertaColisaoSuperior()
-		local mensagem = "Acho melhor irmos em outro lugar antes.\nDepois podemos voltar aqui" 
-		criaCaixaDeAlerta()
-		criaTexto(mensagem)	
-		criaBotaoFechar()
+	local mensagem
+	if ds_idioma=='pt-br' then
+		mensagem = "Acho melhor irmos em outro lugar antes.\nDepois podemos voltar aqui" 
+	elseif ds_idioma=='eng' then
+		mensagem = "I think it's better for we to go in another place before.\n Later we can come back here"
+	end
+	criaCaixaDeAlerta()
+	criaTexto(mensagem)	
+	criaBotaoFechar()
 
-		return true
+	return true
 end

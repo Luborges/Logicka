@@ -22,10 +22,15 @@ local background
 local ceuMovendo
 local logo
 local botoesMenu = {}
+local botoesIdioma = {}
 mensagemSemSave=false
 
 for row in db:nrows("SELECT id_puzzle FROM t_Jogador") do
     id_puzzle = row.id_puzzle
+end
+
+for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    ds_idioma = row.ds_idioma
 end
 
 function Scene:exitScene(event)
@@ -39,6 +44,8 @@ function Scene:exitScene(event)
 	botoesMenu[1]:removeSelf()
 	botoesMenu[2]:removeSelf()
 	botoesMenu[3]:removeSelf()
+	botoesIdioma[1]:removeSelf()
+	botoesIdioma[2]:removeSelf()
 	storyboard.removeScene("MenuInicial")
 	storyboard.removeAll()
 end
@@ -85,7 +92,7 @@ function Scene:createScene(event)
     logo.rotation = 0
 
 	--Botão de Novo Jogo
-	botoesMenu[1] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/novoJogo.png") -- cima
+	botoesMenu[1] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/novoJogo"..ds_idioma..".png") -- cima
 	--Cria botão para cima atraves de uma imagem
 	botoesMenu[1].x = largura *.5
 	--Eixo x do botão
@@ -98,7 +105,7 @@ function Scene:createScene(event)
 	botoesMenu[1].height = altura *.15
 
 	--Botão de Continuar Jogo
-	botoesMenu[2] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/carregar.png") -- cima
+	botoesMenu[2] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/carregar"..ds_idioma..".png") -- cima
 	
 	--Cria botão para cima atraves de uma imagem
 	botoesMenu[2].x = largura*.5
@@ -110,12 +117,11 @@ function Scene:createScene(event)
 	botoesMenu[2].myName = "continuarJogo"
 	
 	--Tamanho do botão
---	botoesMenu[2]:scale(.6,.6)
 	botoesMenu[2].width = largura *.435
 	botoesMenu[2].height = altura *.15
 	
 	--Botão de Sair
-	botoesMenu[3] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/sair.png")
+	botoesMenu[3] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/sair"..ds_idioma..".png")
 	--Cria botão para cima atraves de uma imagem
 	botoesMenu[3].x = largura*.9
 	--Eixo x do botão
@@ -125,6 +131,20 @@ function Scene:createScene(event)
 	--Tamanho do botão
 	botoesMenu[3].width = largura *.18
 	botoesMenu[3].height = altura *.15
+
+	botoesIdioma[1] = display.newImage("GameDesign/DesignGrafico/Dialogos/pt-br.png")
+	botoesIdioma[1].x = largura *.43
+	botoesIdioma[1].y = altura *.06
+	botoesIdioma[1].idioma = "pt-br"
+	botoesIdioma[1].width = largura *.1
+	botoesIdioma[1].height = altura *.1
+
+	botoesIdioma[2] = display.newImage("GameDesign/DesignGrafico/Dialogos/eng.png")
+	botoesIdioma[2].x = largura *.57
+	botoesIdioma[2].y = altura *.06
+	botoesIdioma[2].idioma = "eng"
+	botoesIdioma[2].width = largura *.1
+	botoesIdioma[2].height = altura *.1
 
 end
 
@@ -176,6 +196,61 @@ local acessarJogo = function(e)
 
 end
 
+--Cria função de toque
+local selecionarIdioma = function(e)
+
+	--Se o botão for precionado o movido
+	if e.phase =="began" or e.phase == "moved" then
+
+		for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    		ds_idioma = row.ds_idioma
+		end
+
+		atualizarIdioma = [[UPDATE t_Jogador SET ds_idioma=']]..e.target.idioma..[[']]
+		db:exec(atualizarIdioma)
+
+		botoesMenu[1]:removeSelf()
+		botoesMenu[2]:removeSelf()
+		botoesMenu[3]:removeSelf()
+
+		require ("AlterarIdioma")
+		AlterarIdioma()
+
+	--Se o botão for precionado o movido
+	elseif e.phase =="ended" or e.phase == "cancelled" then
+
+		botoesMenu[1] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/novoJogo"..e.target.idioma..".png")
+		botoesMenu[1].x = largura *.5
+		botoesMenu[1].y = altura *.65
+		botoesMenu[1].myName = "novoJogo"
+		botoesMenu[1].width = largura *.395
+		botoesMenu[1].height = altura *.15
+
+		botoesMenu[2] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/carregar"..e.target.idioma..".png") -- cima
+		botoesMenu[2].x = largura*.5
+		botoesMenu[2].y = altura*.78
+		botoesMenu[2].myName = "continuarJogo"
+		botoesMenu[2].width = largura *.435
+		botoesMenu[2].height = altura *.15
+
+		botoesMenu[3] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/sair"..e.target.idioma..".png")
+		botoesMenu[3].x = largura*.9
+		botoesMenu[3].y = altura*.93
+		botoesMenu[3].myName = "sair"
+		botoesMenu[3].width = largura *.18
+		botoesMenu[3].height = altura *.15
+
+		--Toda vez que clicar, será criado um evento
+		for j=1, #botoesMenu do
+
+		--Cria evento onde a cada toque será chamada a função acessarJogo
+			botoesMenu[j]:addEventListener("touch", acessarJogo)
+
+		end
+	end
+end
+
+
 function Scene:enterScene(event)
 
 	-- Chamando a função
@@ -198,6 +273,14 @@ function Scene:enterScene(event)
 
 	--Cria evento onde a cada toque será chamada a função acessarJogo
 		botoesMenu[j]:addEventListener("touch", acessarJogo)
+
+	end
+
+	--Toda vez que clicar, será criado um evento
+	for j=1, #botoesIdioma do
+
+	--Cria evento onde a cada toque será chamada a função acessarJogo
+		botoesIdioma[j]:addEventListener("touch", selecionarIdioma)
 
 	end
 

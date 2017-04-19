@@ -126,8 +126,8 @@ function criaBotaoVoltarTela()
 
   botaoVoltarTela = widget.newButton{   
   -- Adiciona imagem 
-    defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela.png",
-    overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela.png",
+    defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela"..ds_idioma..".png",
+    overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela"..ds_idioma..".png",
     
   --Posição do botão em x e y
     x = display.contentWidth/1.09,

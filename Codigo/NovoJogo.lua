@@ -14,6 +14,12 @@ require ("sqlite3")
 local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
 local db = sqlite3.open(path) 
 
+local idioma
+
+for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
+    idioma=row.ds_idioma
+end
+
 --Cria cena
 function Scene:createScene(event)
   
@@ -40,9 +46,16 @@ function Scene:createScene(event)
   caixa.width=largura*1.1
   caixa.height=altura*.5
 
+  if idioma == 'pt-br' then
+    texto="Você acordou em uma ilha sem certeza de onde está, com certa dificuldade você tenta se lembrar se você é um garoto ou uma garota!"
+  else
+    texto="You woke up on an island without sure of where you are, you try to remember if you are a boy or a girl!"
+  end
+
+
   caixaDeDialogoOp = 
   {
-    text = "Você acordou em uma ilha sem certeza de onde está, com certa dificuldade você tenta se lembrar se você é um garoto ou uma garota!",     
+    text = texto,     
     x = -largura/100,
     y = caixaDeDialogo.height,
     width = largura/1.066, -- Para alinhar texto com mais de uma linha
@@ -101,8 +114,8 @@ function criaBotaoVoltarTela()
 
   botaoVoltarTela = widget.newButton{   
   -- Adiciona imagem 
-    defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela.png",
-    overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela.png",
+    defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela"..ds_idioma..".png",
+    overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela"..ds_idioma..".png",
     
   --Posição do botão em x e y
     x = display.contentWidth/1.09,
@@ -144,14 +157,14 @@ local touchFunction = function(e)
     -- Se o botão Novo Jogo for tocado
     if opcao=="Masculino" then
 
-      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 1, 1, 1, 0, 'false', 1248, 958)]]
+      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 1, 1, 1, 0, 'false', 1248, 958,']]..idioma..[[')]]
       db:exec(atualizarTabela)
       atualizarDesafio = [[UPDATE t_Puzzle SET fg_realizado='false', fg_liberado='false']]
       db:exec(atualizarDesafio)
 
     elseif opcao=="Feminino" then
 
-      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 2, 1, 1, 0, 'false', 1248, 958)]] 
+      atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 2, 1, 1, 0, 'false', 1248, 958,']]..idioma..[[')]] 
       db:exec(atualizarTabela)
       atualizarDesafio = [[UPDATE t_Puzzle SET fg_realizado='false', fg_liberado='false']]
       db:exec(atualizarDesafio)
