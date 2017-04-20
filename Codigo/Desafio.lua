@@ -442,6 +442,25 @@ sound:stopAll(sound)
 
 end
 
+-- Voltar para o menu inicial quando clicar no botão 'voltar' do celular
+local function onKeyEvent( event )
+	if (event.keyName == "back") then
+        local platformName = system.getInfo( "platformName" )
+        if (platformName == "Android") or ( platformName == "WinPhone" ) then
+			atualizarMovimento(false)
+			objeto(objetosDeDesafio,false)
+			storyboard.removeScene("Fases")
+			Runtime:removeEventListener("enterFrame", update)
+			storyboard.removeAll()
+			storyboard.gotoScene("MenuInicial")
+			passosX=0
+			passosY=0
+            return true
+        end
+    end
+    return false
+end
+
 -- Cria função de toque
 function moverBloco(self, event)
 	
@@ -643,6 +662,8 @@ function Scene:enterScene(event)
 
 	botaoTeste.touch = verificarDesafio
 	botaoTeste:addEventListener("touch", botaoTeste)
+
+	Runtime:addEventListener( "key", onKeyEvent )
 
 end
 

@@ -2,22 +2,18 @@ local sqlite3 = require ("sqlite3")
 local storyboard = require ("storyboard")
  
 local function main()
-	storyboard.gotoScene("MenuInicial")
+	storyboard.gotoScene("SplashScreen")
 end
 
-local function myUnhandledErrorListener( event )
-     local iHandledTheError = true
- 
-    if iHandledTheError then
-        print(event.errorMessage)
-    else
+local function controleDeErros(event)
+	local erro = true
+    if erro then
         print(event.errorMessage)
     end
-    
-    return iHandledTheError
+    return erro
 end
 
-Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
+Runtime:addEventListener("unhandledError", controleDeErros)
 
 main();
 

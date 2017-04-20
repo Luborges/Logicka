@@ -123,19 +123,38 @@ function scene:createScene(event)
 	end
 end
 
+-- Voltar para o menu inicial quando clicar no botão 'voltar' do celular
+local function onKeyEvent( event )
+	if (event.keyName == "back") then
+        local platformName = system.getInfo( "platformName" )
+        if (platformName == "Android") or ( platformName == "WinPhone" ) then
+			atualizarMovimento(false)
+			objeto(objetosDeDesafio,false)
+			storyboard.removeScene("Fases")
+			Runtime:removeEventListener("enterFrame", update)
+			storyboard.removeAll()
+			storyboard.gotoScene("MenuInicial")
+			passosX=0
+			passosY=0
+            return true
+        end
+    end
+    return false
+end
+
 --Inicio da cena
 function scene:enterScene(event)
 
---	atualizarMovimento(false)
 	storyboard.removeScene("MenuInicial")
 	storyboard.removeScene("NovoJogo")
 	storyboard.removeScene("Continuar")
 	storyboard.removeScene("Desafio")
 	atualizarMovimento(true)
+	Runtime:addEventListener("key", onKeyEvent)
 
 end
 
---Remove eventos e objetos da cena
+-- Remove eventos e objetos da cena
 function scene:exitScene(event)
 	objetoColidido=nil
   	if id_fase~=0 then
