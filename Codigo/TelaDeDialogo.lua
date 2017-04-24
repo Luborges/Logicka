@@ -256,6 +256,18 @@ function alteraFundo()
 
 end
 
+local appodeal = require( "plugin.appodeal" )
+
+local function adListener( event )
+
+    if ( event.phase == "init" ) then  -- Successful initialization
+        print( event.isError )
+    end
+end
+
+	-- Initialize the Appodeal plugin
+appodeal.init( adListener, { appKey="281bc7e6da677bf36e000c3727014e0b2d8b5117b26bcfae" } )
+
 function encerraDialogo()
 
 	-- Matar objetos de tela e limpar memoria
@@ -273,7 +285,7 @@ function encerraDialogo()
 	imagemDeFundo=nil
 	if botaoPular~=nil then botaoPular:removeSelf() end
 	botaoPular = nil
-		
+	appodeal.show("interstitial")
 	-- Remove o som da tela de dialogo.
 	sound:stopAll(sound)
 		

@@ -136,6 +136,11 @@ function voltarMenu()
   caixaDeDialogo:removeSelf()
   fundoDaTela:removeSelf()
   storyboard.removeAll()
+  
+  if botaoNao~=nil then
+    fechaAlerta()
+    caixaDeDialogo:removeSelf() 
+  end
 
   for j=1, #selecionarGenero do
   
@@ -145,6 +150,18 @@ function voltarMenu()
   storyboard.gotoScene("MenuInicial")
   storyboard.removeScene("NovoJogo")
 
+end
+
+-- Quando clicar no botão voltar ir para o menu
+local function voltarMenuAndroid( event )
+    if (event.keyName == "back") then
+        local platformName = system.getInfo( "platformName" )
+        if ( platformName == "Android" ) or ( platformName == "WinPhone" ) then
+          voltarMenu()
+          return true
+        end
+    end
+    return false
 end
 
 --Cria função de toque
@@ -193,24 +210,19 @@ local touchFunction = function(e)
 end
 
 function Scene:enterScene(event)
-
 -- Cria variavel
   local j=1
-
-  --Toda vez que clicar, será criado um evento
+  -- Toda vez que clicar, será criado um evento
   for j=1, #selecionarGenero do
-  
-  --Cria evento onde a cada toque será chamada a função touchFunction
+  -- Cria evento onde a cada toque será chamada a função touchFunction
     selecionarGenero[j]:addEventListener("touch", touchFunction)
-  
   end
-
+  Runtime:addEventListener( "key", voltarMenuAndroid )
 end
 
 function Scene:exitScene(event)
     storyboard.removeScene("NovoJogo")
     storyboard.removeAll()
-
 end
 
 return Scene

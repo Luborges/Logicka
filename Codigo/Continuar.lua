@@ -160,12 +160,21 @@ function voltarMenu()
   storyboard.removeScene("Continuar")
 end
 
+-- Quando clicar no botão voltar ir para o menu
+local function voltarMenuAndroid( event )
+    if (event.keyName == "back") then
+        local platformName = system.getInfo( "platformName" )
+        if ( platformName == "Android" ) or ( platformName == "WinPhone" ) then
+          voltarMenu()
+          return true
+        end
+    end
+    return false
+end
 
 function Scene:enterScene(event)
-
 -- Cria variavel
   local j=1
-
    --Toda vez que clicar, será criado um evento
   for j=1, fasesFinalizadas+1,1 do
     if selecionarFase[j]~=nil then
@@ -173,6 +182,7 @@ function Scene:enterScene(event)
       selecionarFase[j]:addEventListener("touch", touchFunction)
     end
   end
+  Runtime:addEventListener( "key", voltarMenuAndroid )
 end
 
 return Scene

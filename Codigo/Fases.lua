@@ -123,25 +123,6 @@ function scene:createScene(event)
 	end
 end
 
--- Voltar para o menu inicial quando clicar no botão 'voltar' do celular
-local function onKeyEvent( event )
-	if (event.keyName == "back") then
-        local platformName = system.getInfo( "platformName" )
-        if (platformName == "Android") or ( platformName == "WinPhone" ) then
-			atualizarMovimento(false)
-			objeto(objetosDeDesafio,false)
-			storyboard.removeScene("Fases")
-			Runtime:removeEventListener("enterFrame", update)
-			storyboard.removeAll()
-			storyboard.gotoScene("MenuInicial")
-			passosX=0
-			passosY=0
-            return true
-        end
-    end
-    return false
-end
-
 --Inicio da cena
 function scene:enterScene(event)
 
