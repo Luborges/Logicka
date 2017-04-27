@@ -5,7 +5,6 @@ local w = display.contentWidth
 local h = display.contentHeight
 local fundo
 local splashScreen
-
 -- Criando Cena com Primeira imagem
 function scene:createScene(event)
 	desenhaFundo()
@@ -21,7 +20,6 @@ function desenhaFundo()
 	fundo:setFillColor(1.1)
 	fundo:toBack()
 end
-
 -- Troca cena para enu inicial
 function scene:enterScene(event)
 	local function toMenu()

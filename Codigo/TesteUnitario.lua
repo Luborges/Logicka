@@ -114,4 +114,4 @@ function testaBuscaDesafio()
 
 	assert(buscaDesafioAtual()~=nil,"O usuário não está presente em nenhum desafio")
 
-	end
+end

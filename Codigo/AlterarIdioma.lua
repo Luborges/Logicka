@@ -1,13 +1,14 @@
 -- AlterarIdioma
-
 require "sqlite3"
 local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
 local db = sqlite3.open(path)
 
 function AlterarIdioma()
+	
 	for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
     	ds_idioma = row.ds_idioma
 	end
+
 	if ds_idioma == 'eng' then
 		atualizarIdioma = [[UPDATE t_Operacao SET ds_variavel='Hit = Hit' WHERE id_operacao=1 or id_operacao=2;]]
 		atualizarIdioma = atualizarIdioma.. [[UPDATE t_Operacao SET ds_variavel='Take = Take' WHERE id_operacao=3 or id_operacao=4 or id_operacao=5 or id_operacao=6;]]
@@ -65,7 +66,6 @@ function AlterarIdioma()
 		atualizarIdioma = atualizarIdioma.. [[UPDATE t_Entrada_Dados SET ds_entrada='Bater Pedras = 0' WHERE id_entrada=8;]]
 		atualizarIdioma = atualizarIdioma.. [[UPDATE t_Entrada_Dados SET ds_entrada='Perder Pedras = 1' WHERE id_entrada=9;]]
 		atualizarIdioma = atualizarIdioma.. [[UPDATE t_Entrada_Dados SET ds_entrada='Subir = 0' WHERE id_entrada=10;]]
-
 	end
-db:exec(atualizarIdioma)
+	db:exec(atualizarIdioma)
 end

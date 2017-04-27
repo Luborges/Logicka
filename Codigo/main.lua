@@ -1,8 +1,8 @@
 local sqlite3 = require ("sqlite3")
 local storyboard = require ("storyboard")
- 
+
 local function main()
-	storyboard.gotoScene("SplashScreen")
+	storyboard.gotoScene("MenuInicial")
 end
 
 local function controleDeErros(event)
@@ -16,15 +16,3 @@ end
 Runtime:addEventListener("unhandledError", controleDeErros)
 
 main();
-
--- Chama classe de Testes
--- require("TesteUnitario")
-
--- testaValoresDeOperacao()
--- testaValoresDeDecisao()
--- testaVerificacaoDeDesafio()
--- testaMapaExistente()
--- testaGenero()
--- testaLaco()
--- testaBuscaFase()
--- testaBuscaDesafio()

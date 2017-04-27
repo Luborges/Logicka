@@ -1,32 +1,24 @@
---Novo Jogo
-
+-- Novo Jogo
 local storyboard = require ("storyboard")
 local Scene = storyboard.newScene()
 Scene:addEventListener("createScene", Scene)
 Scene:addEventListener("enterScene", Scene)
 local widget = require("widget")
-
 -- Calcula largura e altura da tela
 local largura = display.contentWidth
 local altura = display.contentHeight
-
 require ("sqlite3")
 local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
 local db = sqlite3.open(path) 
-
 local idioma
-
 for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
     idioma=row.ds_idioma
 end
-
 --Cria cena
 function Scene:createScene(event)
-  
   local screenGroup = self.view
-
---Fundo
---Utiliza imagem já existente como imagem de fundo
+  -- Fundo
+  -- Utiliza imagem já existente como imagem de fundo
   fundoDaTela = display.newImage("GameDesign/DesignGrafico/NovoPersonagem/backgroundTelaSelecao.png")
   screenGroup:insert(fundoDaTela)
   caixaDeDialogo = display.newGroup()
@@ -52,7 +44,6 @@ function Scene:createScene(event)
     texto="You woke up on an island without sure of where you are, you try to remember if you are a boy or a girl!"
   end
 
-
   caixaDeDialogoOp = 
   {
     text = texto,     
@@ -63,7 +54,6 @@ function Scene:createScene(event)
     fontSize = largura/32,
     align = "left" -- Alinhamento a esquerda
   }
-
   textoCaixaDialogo = display.newText( caixaDeDialogoOp )
   textoCaixaDialogo:setFillColor( 0, 0, 0 )
 
@@ -75,18 +65,18 @@ function Scene:createScene(event)
 
   selecionarGenero = {}
 
-  --Botão de Novo Jogo
+  -- Botão de Novo Jogo
   selecionarGenero[1] = display.newImage("GameDesign/DesignGrafico/NovoPersonagem/menino.png")
-  --Tamanho do botão
+  -- Tamanho do botão
   selecionarGenero[1].width=largura*.32
   selecionarGenero[1].height=altura*.55 
   selecionarGenero[1].x=largura*.27
   selecionarGenero[1].y=altura*.3
   selecionarGenero[1].myName="Masculino"
 
-  --Botão de Continuar Jogo
+  -- Botão de Continuar Jogo
   selecionarGenero[2] = display.newImage("GameDesign/DesignGrafico/NovoPersonagem/menina.png")
-  --Tamanho do botão
+  -- Tamanho do botão
   selecionarGenero[2].width=largura*.32
   selecionarGenero[2].height=altura*.55
   selecionarGenero[2].x=largura*.72
@@ -94,11 +84,9 @@ function Scene:createScene(event)
   selecionarGenero[2].myName="Feminino"
   
   criaBotaoVoltarTela()
-
   for row in db:nrows("SELECT id_puzzle FROM t_Jogador") do
       id_puzzle=row.id_puzzle
   end
-
   if id_puzzle ~=nil then
     if id_puzzle > 1 then
       require ("MensagemDeAlerta")
@@ -106,29 +94,24 @@ function Scene:createScene(event)
       ma:alertaApagarJogo() 
     end
   end
-
 end
 
 -- Metodo que cria o botão fechar 
 function criaBotaoVoltarTela()
-
   botaoVoltarTela = widget.newButton{   
   -- Adiciona imagem 
     defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela"..ds_idioma..".png",
     overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoVoltarTela"..ds_idioma..".png",
-    
-  --Posição do botão em x e y
+  -- Posição do botão em x e y
     x = display.contentWidth/1.09,
     y = display.contentHeight/9.9,
-
-  --Define tamanho do botão em pixels
+  -- Define tamanho do botão em pixels
     width = display.contentWidth/7,
     height = display.contentWidth/11,
-  --função para o botão
+  -- Função para o botão
     onRelease = voltarMenu
   }
   botaoVoltarTela:toFront()
-
 end
 
 function voltarMenu()
@@ -136,20 +119,15 @@ function voltarMenu()
   caixaDeDialogo:removeSelf()
   fundoDaTela:removeSelf()
   storyboard.removeAll()
-  
   if botaoNao~=nil then
     fechaAlerta()
     caixaDeDialogo:removeSelf() 
   end
-
   for j=1, #selecionarGenero do
-  
-  selecionarGenero[j]:removeSelf()
-  
+    selecionarGenero[j]:removeSelf()
   end
   storyboard.gotoScene("MenuInicial")
   storyboard.removeScene("NovoJogo")
-
 end
 
 -- Quando clicar no botão voltar ir para o menu
@@ -164,53 +142,43 @@ local function voltarMenuAndroid( event )
     return false
 end
 
---Cria função de toque
+-- Cria função de toque
 local touchFunction = function(e)
   local opcao = e.target.myName
 
-  --Se o botão for precionado o movido
+  -- Se o botão for precionado o movido
   if e.phase =="began" or e.phase == "moved" then  
-
     -- Se o botão Novo Jogo for tocado
     if opcao=="Masculino" then
-
       atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 1, 1, 1, 0, 'false', 1248, 958,']]..idioma..[[')]]
       db:exec(atualizarTabela)
       atualizarDesafio = [[UPDATE t_Puzzle SET fg_realizado='false', fg_liberado='false']]
       db:exec(atualizarDesafio)
 
     elseif opcao=="Feminino" then
-
       atualizarTabela = [[INSERT OR REPLACE INTO t_Jogador VALUES (1, 2, 1, 1, 0, 'false', 1248, 958,']]..idioma..[[')]] 
       db:exec(atualizarTabela)
       atualizarDesafio = [[UPDATE t_Puzzle SET fg_realizado='false', fg_liberado='false']]
       db:exec(atualizarDesafio)
-
    end
-
       liberarDesafio = [[UPDATE t_Puzzle SET fg_liberado='true' WHERE id_puzzle=1]]
       db:exec(liberarDesafio)
       dialogosIniciais = [[UPDATE t_Fase SET fg_dialogo='true']]
       db:exec(dialogosIniciais)
-
   end
-
   botaoVoltarTela:removeSelf()
   caixaDeDialogo:removeSelf()
   fundoDaTela:removeSelf()
   storyboard.removeAll()
-
   for j=1, #selecionarGenero do
-  
-  selecionarGenero[j]:removeSelf()
-  
+    selecionarGenero[j]:removeSelf()
   end
-    storyboard.gotoScene("Fases")
-    storyboard.removeScene("NovoJogo")
+  storyboard.gotoScene("Fases")
+  storyboard.removeScene("NovoJogo")
 end
 
 function Scene:enterScene(event)
--- Cria variavel
+  -- Cria variavel
   local j=1
   -- Toda vez que clicar, será criado um evento
   for j=1, #selecionarGenero do
@@ -221,8 +189,8 @@ function Scene:enterScene(event)
 end
 
 function Scene:exitScene(event)
-    storyboard.removeScene("NovoJogo")
-    storyboard.removeAll()
+  storyboard.removeScene("NovoJogo")
+  storyboard.removeAll()
 end
 
 return Scene

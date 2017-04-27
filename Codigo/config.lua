@@ -1,6 +1,5 @@
 --calculate the aspect ratio of the device:
 local aspectRatio = display.pixelHeight / display.pixelWidth
-
 application = {
    content = {
       width = aspectRatio > 1.5 and 410 or math.floor( 650 / aspectRatio ),

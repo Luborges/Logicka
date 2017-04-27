@@ -5,13 +5,11 @@ local botaoFechar
 require "sqlite3"
 local path = system.pathForFile("Logicka.db", system.DocumentsDirectory)
 local db = sqlite3.open(path)
-
 for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
     ds_idioma = row.ds_idioma
 end
--- classe
+-- Classe
 MensagemDeAlerta = {}
-
 function MensagemDeAlerta:new (o)
   o = o or {}
   setmetatable(o, self)
@@ -20,19 +18,18 @@ function MensagemDeAlerta:new (o)
 end
 	
 function criaCaixaDeAlerta()
-	-- inserindo caixa de alerta
+	-- Inserindo caixa de alerta
  	caixaDeAlerta = display.newImage("GameDesign/DesignGrafico/CaixaDialogo/caixaAlerta.png")
  	caixaDeAlerta.x = display.contentWidth/2
  	caixaDeAlerta.y = display.contentHeight/2
  	caixaDeAlerta.width = display.contentWidth/1.5
 	caixaDeAlerta.height = display.contentHeight*0.5
 	caixaDeAlerta:toFront() 
-
 end
 
 -- Metodo que cria o texto
 function criaTexto(oTexto)
-	-- caixa de texto
+	-- Caixa de texto
 		texto = display.newText(
 		oTexto, 
 		display.contentWidth/2,
@@ -46,88 +43,73 @@ end
 
 -- Metodo que cria o botão fechar 
 function criaBotaoFechar()
-
  	botaoFechar = widget.newButton{		
  	-- Adiciona imagem 
  		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoFechar.png",
  		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoFecharPressisonado.png",
- 		
- 	--Posição do botão em x e y
+ 	-- Posição do botão em x e y
  		x = display.contentWidth/1.35,
  		y = display.contentHeight/2.7,
-
- 	--Define tamanho do botão em pixels
+ 	-- Define tamanho do botão em pixels
  		width = display.contentWidth/10,
  		height = display.contentWidth/10,
- 	--função para o botão
+ 	-- Função para o botão
  		onRelease = fechaAlerta
  	}
  	botaoFechar:toFront()
-
 end
 
 -- Metodo que cria o botão fechar 
 function criaBotaoSim()
-
  	botaoSim = widget.newButton{		
  	-- Adiciona imagem 
  		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim"..ds_idioma..".png",
  		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoSim"..ds_idioma..".png",
- 		
- 	--Posição do botão em x e y
+ 	-- Posição do botão em x e y
  		x = display.contentWidth*.35,
  		y = display.contentHeight/1.35,
-
- 	--Define tamanho do botão em pixels
+ 	-- Define tamanho do botão em pixels
  		width = display.contentWidth/10,
  		height = display.contentWidth/10,
- 	--função para o botão
+ 	-- Função para o botão
  		onRelease = fechaAlerta
  	}
  	botaoSim:toFront()
-
 end
 
 -- Metodo que cria o botão fechar 
 function criaBotaoNao()
-
  	botaoNao = widget.newButton{		
  	-- Adiciona imagem 
  		defaultFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao"..ds_idioma..".png",
  		overFile = "GameDesign/DesignGrafico/CaixaDialogo/botaoNao"..ds_idioma..".png",
- 		
- 	--Posição do botão em x e y
+ 	-- Posição do botão em x e y
  		x = display.contentWidth*.63,
  		y = display.contentHeight/1.35,
-
- 	--Define tamanho do botão em pixels
+ 	-- Define tamanho do botão em pixels
  		width = display.contentWidth/10,
  		height = display.contentWidth/10,
- 	--função para o botão
+ 	-- Função para o botão
  		onRelease = retornarMenu
  	}
  	botaoNao:toFront()
-
 end
 
 function retornarMenu()
 	fechaAlerta()
 	caixaDeDialogo:removeSelf()
     fundoDaTela:removeSelf()
-
     for j=1, #selecionarGenero do
     	selecionarGenero[j]:removeSelf()
     end
-
 	botaoVoltarTela:removeSelf()
-	
 	local storyboard = require ("storyboard")
 	storyboard.gotoScene("MenuInicial")
 end
 
 -- Metodo que fecha caixa de dialogo
 function fechaAlerta()	
-	--matar objetos de tela e limpar memoria
+	-- Matar objetos de tela e limpar memoria
 	caixaDeAlerta:removeSelf()
 	caixaDeAlerta = nil
 	texto:removeSelf()
@@ -153,7 +135,6 @@ function MensagemDeAlerta:alertaSemSaveGame()
 	criaCaixaDeAlerta()
 	criaTexto(mensagem)	
 	criaBotaoFechar()
-
 	return true
 end
 
@@ -183,7 +164,6 @@ function MensagemDeAlerta:alertaSemColisao()
 	criaCaixaDeAlerta()
 	criaTexto(mensagem)	
 	criaBotaoFechar()
-
 	return true
 end
 
@@ -198,6 +178,5 @@ function MensagemDeAlerta:alertaColisaoSuperior()
 	criaCaixaDeAlerta()
 	criaTexto(mensagem)	
 	criaBotaoFechar()
-
 	return true
 end

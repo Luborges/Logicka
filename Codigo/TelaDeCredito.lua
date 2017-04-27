@@ -14,14 +14,13 @@ for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
 end
 
 TelaDeCredito = {}
-
 function TelaDeCredito:new (o)
   o = o or {}
   setmetatable(o, self)
   self.__index = self
   return o
 end
--- metodo que cria o texto
+-- Método que cria o texto
 function TelaDeCredito:criaTexto(oTexto)
 	-- deseha texto
 	texto = display.newText(
@@ -31,8 +30,7 @@ function TelaDeCredito:criaTexto(oTexto)
 		"arial", display.contentWidth/30)
 	texto:setFillColor(255,255,255)
 end
-
--- metodo que move o texto
+-- Método que move o texto
 function TelaDeCredito:moveTexto(oIndice)
 	sound:stopAll(sound)
 	sound:add("GameDesign/Audio/Credito.mp3", "GameDesign/Audio/Credito")
@@ -53,8 +51,7 @@ function TelaDeCredito:moveTexto(oIndice)
 			passosY=0
 			end})
 end
-
--- metodo que cria os creditos
+-- Método que cria os creditos
 function TelaDeCredito:creditos()
 	local indice
 	local text
@@ -105,12 +102,9 @@ function TelaDeCredito:creditos()
 						" Thanks for playing.\n"..
 						" \n"
 	end
-
 	display.setDefault( "background", 0, 0, 0 )
 	textoDeCredito[1] = text
-
 	for indice = 1,table.getn(textoDeCredito),1 do
-		
 		timer.performWithDelay(500,TelaDeCredito:moveTexto(indice))
 	end
 end

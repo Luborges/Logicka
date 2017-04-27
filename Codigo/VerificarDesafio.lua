@@ -311,7 +311,7 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 			desafioPr=desafioAt+1
 			local solucao=[[UPDATE t_Puzzle SET fg_realizado='true' WHERE id_puzzle =]]..desafioAt..[[;]]
 			local desbloqueio=[[UPDATE t_Puzzle SET fg_liberado='true' WHERE id_puzzle =]]..desafioPr..[[;]]
-			local avancarDesafio = [[UPDATE t_Jogador SET id_puzzle=]]..desafioPr..[[;]]
+			local avancarDesafio = [[UPDATE t_Jogador SET id_puzzle_anterior=id_puzzle, id_puzzle=]]..desafioPr..[[;]]
 
 
 			db:exec(avancarDesafio)
@@ -382,7 +382,7 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 			retornoDaVerificacao.atualizacao=true
 			retornoDaVerificacao.fase=proximaFaseV
 
-			local avancarFase = [[UPDATE t_Jogador SET id_puzzle=(SELECT MIN(id_puzzle) FROM t_Puzzle WHERE id_fase=]]..retornoDaVerificacao.fase..[[) WHERE id_jogador = 1;]]
+			local avancarFase = [[UPDATE t_Jogador SET id_puzzle_anterior=id_puzzle, id_puzzle=(SELECT MIN(id_puzzle) FROM t_Puzzle WHERE id_fase=]]..retornoDaVerificacao.fase..[[) WHERE id_jogador = 1;]]
 
 			db:exec(avancarFase)
 
@@ -402,7 +402,7 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 			retornoDaVerificacao.atualizacao=true
 			retornoDaVerificacao.fase=proximaFaseF
 
-			local avancarFase = [[UPDATE t_Jogador SET id_puzzle=(SELECT MIN(id_puzzle) FROM t_Puzzle WHERE id_fase=]]..retornoDaVerificacao.fase..[[) WHERE id_jogador = 1;]]
+			local avancarFase = [[UPDATE t_Jogador SET id_puzzle_anterior=id_puzzle, id_puzzle=(SELECT MIN(id_puzzle) FROM t_Puzzle WHERE id_fase=]]..retornoDaVerificacao.fase..[[) WHERE id_jogador = 1;]]
 
 			db:exec(avancarFase)
 
@@ -417,6 +417,7 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 				faseAtual=row.id_fase 
 			end
 
+			db:exec([[UPDATE t_Jogador SET id_puzzle_anterior=id_puzzle;]])
 			retornoDaVerificacao = {}
 			retornoDaVerificacao.proximoDialogo=dialogo.."Falha"
 			retornoDaVerificacao.atualizacao=false
