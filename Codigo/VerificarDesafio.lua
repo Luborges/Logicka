@@ -342,6 +342,9 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 				faseAtual=row.id_fase 
 			end
 
+			local avancarDesafioAnterior = [[UPDATE t_Jogador SET id_puzzle_anterior=id_puzzle;]]
+			db:exec(avancarDesafioAnterior)
+
 			retornoDaVerificacao = {}
 			retornoDaVerificacao.proximoDialogo=dialogo.."Falha"
 			retornoDaVerificacao.atualizacao=false
@@ -407,6 +410,9 @@ function verificarResultado(valorDoBloco, resultado, flagExibicao, desafioAt, tr
 			db:exec(avancarFase)
 
 		else
+
+			local avancarDesafioAnterior = [[UPDATE t_Jogador SET id_puzzle_anterior=id_puzzle;]]
+			db:exec(avancarDesafioAnterior)
 
 			-- Laço que irá rodar enquanto houverem linhas na tabela
 			for row in db:nrows("SELECT ds_puzzle FROM t_Puzzle WHERE id_puzzle ="..desafioAt) do

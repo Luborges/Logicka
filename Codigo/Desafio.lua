@@ -159,7 +159,7 @@ function Scene:createScene(event)
 	background.x=largura*.5
 	background.y=altura*.5
 
-	botaoTeste = display.newImage("GameDesign/DesignGrafico/Desafio/testarBlocos.jpg")
+	botaoTeste = display.newImage("GameDesign/DesignGrafico/Desafio/testarBlocos.png")
 	botaoTeste.x=largura*.88
 	botaoTeste.y=altura*.89
 	botaoTeste.width=largura*.3

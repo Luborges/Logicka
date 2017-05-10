@@ -69,10 +69,9 @@ function scene:createScene(event)
 				i_p=row.id_puzzle
 				i_pa=row.id_puzzle_anterior
 			end
-
+			print(i_p)
+			print(i_pa)
 			if (p_min==p_max and i_p~=i_pa) then
-				print(i_p)
-				print(i_pa)
 				pX=ini_x
 				pY=ini_y
 			else

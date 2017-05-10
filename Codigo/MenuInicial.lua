@@ -185,6 +185,7 @@ local selecionarIdioma = function(e)
 		botoesMenu[3]:removeSelf()
 		require ("AlterarIdioma")
 		AlterarIdioma()
+		
 	-- Se o botão for precionado o movido
 	elseif e.phase =="ended" or e.phase == "cancelled" then
 		botoesMenu[1] = display.newImage("GameDesign/DesignGrafico/TelaInicial/LogotipoMenu/novoJogo"..e.target.idioma..".png")

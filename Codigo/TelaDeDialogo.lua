@@ -18,9 +18,11 @@ sound = Sons:new{1,2}
 sound:add( "GameDesign/Audio/Dialogo_inicial.mp3", "GameDesign/Audio/Dialogo_inicial")
 sound:setVolume( 0.4 )
 sound:play("GameDesign/Audio/Dialogo_inicial", {loops=-1} )
+
 for row in db:nrows("SELECT ds_idioma FROM t_Jogador") do
    	ds_idioma = row.ds_idioma
 end
+
 -- Classe
 TelaDeDialogo = {}
 function TelaDeDialogo:new (o)
@@ -29,6 +31,7 @@ function TelaDeDialogo:new (o)
   self.__index = self
   return o
 end
+
 -- Buscando o sexo do personagem no banco 
 function buscaSexoPersonagem()
 	local db = sqlite3.open(path)
@@ -87,6 +90,7 @@ function TelaDeDialogo:criaCaixaDialogo()
 	caixaDeDialogo.height = display.contentHeight*0.5  
 	caixaDeDialogo:toFront()
 end
+
 -- Método que cria o texto
 -- newText(posX, posY, largX, largY,tipoFonte,tamanho)
 function TelaDeDialogo:criaTexto(oTexto,oEmissor)
@@ -143,6 +147,7 @@ function TelaDeDialogo:criaBotaoAnterior()
  		onRelease = voltaDialogo,
  	}
 end
+
 -- Método que cria o botão Anterior 
 function TelaDeDialogo:criaBotaoPular()
 	--Botão de Pular diálogo
@@ -156,6 +161,7 @@ function TelaDeDialogo:criaBotaoPular()
 	--Nomeia o botão
 	botaoPular.myName = "pular"
 end
+
 -- Método que atualiza o dialogo para o anterior
 function voltaDialogo()	
 	local soundEffect = audio.loadSound("GameDesign/Audio/retornar.mp3")
@@ -164,6 +170,7 @@ function voltaDialogo()
 	alteraTexto()
 	alteraFundo()
 end
+
 -- Método que atualiza o dialogo
 function atualizaDialogo()
 	indice = indice + 1 
@@ -175,6 +182,7 @@ function atualizaDialogo()
 		encerraDialogo()
 	end
 end
+
 -- Método que altera texto
 function alteraTexto()
 	if oEmissor == "Narrador" then
@@ -189,6 +197,7 @@ function alteraTexto()
 		personagemEmissor:setFillColor(0,0,0)
 	end
 end
+
 -- Método que altera plano de fundo
 function alteraFundo()
 	imagemDeFundo:removeSelf()
@@ -204,6 +213,7 @@ function alteraFundo()
 	botaoAnterior:toFront()
 	personagemEmissor:toFront()
 end
+
 local appodeal = require( "plugin.appodeal" )
 local function adListener( event )
     if ( event.phase == "init" ) then  -- Successful initialization
@@ -259,6 +269,7 @@ function encerraDialogo()
 		end
 	end
 end
+
 -- Método responsavel pelo avanço do diaogo
 function avancaDialogo()
 		local soundEffect = audio.loadSound("GameDesign/Audio/avançar.mp3")
@@ -267,6 +278,7 @@ function avancaDialogo()
 		oEmissor = textoDialogo[indice][2]
 		aImagem = textoDialogo[indice][3]
 end
+
 -- Método que retorna ao dialogo anterior e incremeta indice
 function retornaDialogo()
 	if indice >= 2 then
@@ -280,6 +292,7 @@ function retornaDialogo()
 		end 
 	end	
 end
+
 -- Dialogo de inicio do jogo
 function TelaDeDialogo:dialogoFase()
 	-- sp recebe o resultado da busca pelo sexo do personagem "M" ou "F"
@@ -295,7 +308,11 @@ function TelaDeDialogo:dialogoFase()
 	arquivo = nil
 	aImagem = "GameDesign/DesignGrafico/Fases/TelaDialogo"..faseAtual.."/fundoDialogo00.jpg"
 	oTexto = "..."
-	oEmissor = "Personagem"
+	if ds_idioma == 'eng' then 
+		oEmissor = "Character"
+	else
+		oEmissor = "Personagem"
+	end
 	TelaDeDialogo:criaFundo(aImagem)
 	TelaDeDialogo:criaCaixaDialogo()
 	TelaDeDialogo:criaTexto(oTexto,oEmissor)
@@ -321,6 +338,7 @@ function TelaDeDialogo:dialogoFase()
 	atualizarDados = [[UPDATE t_Fase SET fg_dialogo='false' WHERE id_fase=1]]
 	db:exec(atualizarDados)
 end
+
 -- Dialogo inicial do desafio verificar coco 
 function TelaDeDialogo:desafios(tipoDialogo)
 	-- sp recebe o resultado da busca pelo sexo do personagem "M" ou "F"

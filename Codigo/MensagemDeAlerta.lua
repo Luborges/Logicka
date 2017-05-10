@@ -98,13 +98,8 @@ end
 function retornarMenu()
 	fechaAlerta()
 	caixaDeDialogo:removeSelf()
-    fundoDaTela:removeSelf()
-    for j=1, #selecionarGenero do
-    	selecionarGenero[j]:removeSelf()
-    end
 	botaoVoltarTela:removeSelf()
-	local storyboard = require ("storyboard")
-	storyboard.gotoScene("MenuInicial")
+	voltarMenu()
 end
 
 -- Metodo que fecha caixa de dialogo
@@ -130,7 +125,7 @@ function MensagemDeAlerta:alertaSemSaveGame()
 	if ds_idioma=='pt-br' then
 		mensagem = "Você não possui um\n Jovo Salvo!\nPor favor inicie um Novo Jogo." 
 	elseif ds_idioma=='eng' then
-		mensagem = "You don't have a \n Game Saved!\n Please, start a New Game."
+		mensagem = "You don't have a \n Saved Game !\n Please, start a New Game."
 	end
 	criaCaixaDeAlerta()
 	criaTexto(mensagem)	

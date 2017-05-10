@@ -1,8 +1,8 @@
 local sqlite3 = require ("sqlite3")
-local storyboard = require ("storyboard")
+local storyboard = require( "storyboard" )
 
 local function main()
-	storyboard.gotoScene("MenuInicial")
+	storyboard.gotoScene("SplashScreen")
 end
 
 local function controleDeErros(event)
