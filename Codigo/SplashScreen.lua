@@ -9,7 +9,7 @@ local splashScreen
 function scene:createScene(event)
 	desenhaFundo()
 	grp = self.view
-	splashScreen = display.newImageRect("GameDesign/DesignGrafico/SplashScreen/kscompany.png",w,h)
+	splashScreen = display.newImageRect("GameDesign/DesignGrafico/SplashScreen/kscompany.jpg",w,h)
 	splashScreen.x = w/2
 	splashScreen.y = h/2
 	grp:insert(splashScreen)	
